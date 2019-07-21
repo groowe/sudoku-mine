@@ -62,8 +62,27 @@ def givenumber(x,y):
 
     return possible,False
 
+def hardtry():
 
-
+    grid = [['0' for i in range(9)] for i in range(9)]
+    grid[0] = [3,0,0,2,0,0,1,0,0]
+    grid[1] = [0,0,5,7,1,3,0,0,0]
+    grid[2] = [0,0,7,4,6,0,8,0,0]
+    grid[3] = [8,0,0,3,0,0,0,1,2]
+    grid[4] = [7,0,0,8,5,0,0,0,9]
+    grid[5] = [9,2,0,0,4,6,0,0,0]
+    grid[6] = [0,7,0,0,0,0,0,4,6]
+    grid[7] = [0,1,0,0,0,0,2,5,8]
+    grid[8] = [0,0,0,5,0,4,0,9,0]
+    for i in grid:
+        print(i)
+    for i in range(len(grid)):
+        for s in range(len(grid[i])):
+            if grid[i][s] == 0:
+                grid[i][s] = '0'
+    for i in grid:
+        print(i)
+    return grid
 
 def basictry():
     grid = [['0' for i in range(9)] for i in range(9)]
@@ -118,6 +137,11 @@ def printgrid():
     input()
 
 def steptwochecking(x,y):
+    pn = [int(i) for i in grid[x][y]]
+
+
+
+
     return
 
 def steptwo(): # if simple logic is not enough
@@ -130,7 +154,8 @@ def steptwo(): # if simple logic is not enough
     return
 
 if __name__ == "__main__":
-    grid = basictry()
+#    grid = basictry()
+    grid = hardtry()
     for i in grid:
         print(i)
     step = 1 
