@@ -17,59 +17,56 @@
 # Other wise go to next cell
 # Go to step 2
 
-import random
 
 numbers = [i for i in range(1,10)]
 grid = [[None for i in range(9)] for i in range(9)]
 
 def checkrow(num,x):
-    if num in grid[x]:
-        return False
+    for i in grid[x]:
+        if num == i:
+            return False
     return True
 
 def checkcolumn(num,y):
     for i in range(len(grid)):
-        if num == grid[i][y]:
+        if grid[i][y] == num:
             return False
     return True
 
-
 def checksquare(num,x,y):
-    modx = int(x/3)*3 
-
-    mody = int(y/3) *3
-#    print(f'{x} = {modx}')
-#    print(f'{y} = {mody}')
-    for rowx in range(modx,modx+3):
-        for culomny in range(mody,mody+3):
-            if num == grid[rowx][culomny]:
+    modx = int(x/3)*3
+    mody = int(y/3)*3
+    for row in range(modx,modx+3):
+        for column in range(mody,mody+3):
+            if grid[row][column] == num:
                 return False
     return True
 
 
+def givenumber(x,y):
+    # if one possible ,return it as int
+    # if more, return string of those
+    numbers = []
+    for i in range(1,10):
+        if checksquare(i,x,y) == True:
+            if checkcolumn(i,y) == True:
+                if checkrow(i,x) == True:
+                    numbers.append(i)
+    if len(numbers) == 1:
+        return numbers[0],True
+    possible = ""
+    for i in range(len(numbers)):
+        possible += str(numbers[i])
+#    print(f'possible numbers = {possible}')
+#    input()
 
-def givecellnumber(x,y):
-    tries = 0
-    while True:
-        tries += 1
-        r= random.randint(0,8)
-
-        numtry = numbers[r]
-        if checksquare(numtry,x,y) == True:
-            if checkcolumn(numtry,y) == True:
-                if checkrow(numtry,x) == True:
-                    return numtry
-        
-        if tries > 100:
-            for line in grid:
-                print(line)
-            input()
+    return possible,False
 
 
-    return numtry
+
 
 def basictry():
-    grid = [[0 for i in range(9)] for i in range(9)]
+    grid = [['0' for i in range(9)] for i in range(9)]
     grid[0][0] = 5
     grid[0][1] = 3
     grid[0][4] = 7
@@ -105,25 +102,52 @@ def basictry():
 def done():
     for x in grid:
         for y in x:
-            if type(y) == int and y > 0:
+            if type(y) == int:
                 continue
             else:
                 print(f'not done ! {y}')
                 return False
+    for row in grid:
+        print(row)
+    print("DONE!")
     return True
+
+def printgrid():
+    for i in grid:
+        print(i)
+    input()
+
+def steptwochecking(x,y):
+    return
+
+def steptwo(): # if simple logic is not enough
+    for x in range(len(grid)):
+        for y in range(len(grid[x])):
+            if grid[x][y] != int:
+                grid[x][y] = steptwochecking(x,y)
+
+
+    return
+
 if __name__ == "__main__":
     grid = basictry()
     for i in grid:
         print(i)
-    input()
-    for row in range(len(grid)):
-        for cell in range(len(grid)):
-            r = random.randint(0,8)
-            if grid[row][cell] == 0:
+    step = 1 
+    while not done():
+        progress = False
+        for x in range(len(grid)):
+            for y in range(len(grid[x])):
+                if type(grid[x][y]) != int:
+                    grid[x][y],check = givenumber(x,y)
+                    if progress == False and check == True:
+                        progress = True
+        print(f'step {step}')
+        step += 1
+        print(f'progress = {progress}')
+#        if progress == False:
+#            steptwo()
+        printgrid()
 
-                grid[row][cell] = givecellnumber(row,cell)
-                print('grid[row][cell] = {}'.format(grid[row][cell]))
-                done()
-    print(done())
-    for line in grid:
-        print(line)
+
+
