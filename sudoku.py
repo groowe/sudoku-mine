@@ -190,13 +190,13 @@ def steptwochecking(x,y):
     pn = [int(i) for i in grid[x][y]]
     for i in pn:
         if uniqueinrow(i,x,y) == True:
-            print("uir")
+            print(f"uir {i} = {x},{y}")
             return i
 #        if uniqueinsquare(i,x,y) == True:
 #            print("uis")
 #            return i
         if uniqueinculomn(i,x,y) == True:
-            print("uic")
+            print(f"uic {i} = {x},{y}")
             return i
 
 
@@ -229,8 +229,8 @@ def stepone():
 def main():
 
     global grid
-#    grid = hardtry()
-    grid = extremetry()
+    grid = hardtry()
+#    grid = extremetry()
 
 #    grid = basictry()
     for i in grid:
