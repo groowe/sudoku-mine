@@ -136,8 +136,21 @@ def printgrid():
         print(i)
     input()
 
+def uniqueinrow(num,x):
+    listofnums = []
+    for i in range(len(grid[x])):
+        if i != int:
+            for s in str(i):
+                listofnums.append(s)
+    if 
+
+
 def steptwochecking(x,y):
     pn = [int(i) for i in grid[x][y]]
+    for i in pn:
+        if uniqueinrow(i,x) == True
+
+
 
 
 
