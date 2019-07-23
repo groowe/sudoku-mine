@@ -62,6 +62,26 @@ def givenumber(x,y):
 
     return possible,False
 
+def extremetry():
+    grid = [['0' for i in range(9)] for i in range(9)]
+    grid[0] = [0,0,9,0,3,0,0,0,8]
+    grid[1] = [0,0,2,0,0,1,0,7,0]
+    grid[2] = [0,0,0,6,7,0,0,4,0]
+    grid[3] = [9,1,0,0,0,0,0,0,0]
+    grid[4] = [0,6,7,0,0,0,8,5,0]
+    grid[5] = [0,0,0,0,0,0,0,9,3]
+    grid[6] = [0,9,0,0,8,6,0,0,0]
+    grid[7] = [0,3,0,5,0,0,7,0,0]
+    grid[8] = [8,0,0,0,1,0,2,0,0]
+    for i in grid:
+        print(i)
+    for i in range(len(grid)):
+        for s in range(len(grid[i])):
+            if grid[i][s] == 0:
+                grid[i][s] = '0'
+    for i in grid:
+        print(i)
+    return grid
 def hardtry():
 
     grid = [['0' for i in range(9)] for i in range(9)]
@@ -136,56 +156,95 @@ def printgrid():
         print(i)
     input()
 
-def uniqueinrow(num,x):
-    listofnums = []
-    for i in range(len(grid[x])):
-        if i != int:
-            for s in str(i):
-                listofnums.append(s)
-    if 
+def uniqueinrow(num,x,y):
+    for yt in range(len(grid[x])):
+        if type(grid[x][yt]) != int and yt != y:
+            for i in grid[x][yt]:
+                if int(i) == num:
+                    return False
+    return True
+
+def uniqueinsquare(num,x,y):
+    modx = int(x/3)*3
+    mody = int(y/3)*3
+    for row in range(modx,modx+3):
+        for column in range(mody,mody+3):
+            if type(grid[row][column]) != int:
+                if row != x and column != y:
+                    for n in grid[row][column]:
+                        if int(n) == num:
+                            return False
+    return True
+
+def uniqueinculomn(num,x,y):
+
+    for i in range(len(grid)):
+        if type(grid[i][y]) != int and i != x:
+            for n in grid[i][y]:
+                if int(n) == num:
+                    return False
+    return True
 
 
 def steptwochecking(x,y):
     pn = [int(i) for i in grid[x][y]]
     for i in pn:
-        if uniqueinrow(i,x) == True
+        if uniqueinrow(i,x,y) == True:
+            print("uir")
+            return i
+#        if uniqueinsquare(i,x,y) == True:
+#            print("uis")
+#            return i
+        if uniqueinculomn(i,x,y) == True:
+            print("uic")
+            return i
 
 
 
 
 
 
-    return
+    return grid[x][y]
 
 def steptwo(): # if simple logic is not enough
     for x in range(len(grid)):
         for y in range(len(grid[x])):
-            if grid[x][y] != int:
+            if type(grid[x][y]) != int:
                 grid[x][y] = steptwochecking(x,y)
 
 
     return
 
-if __name__ == "__main__":
+def stepone():
+    progress = False
+    for x in range(len(grid)):
+        for y in range(len(grid[x])):
+            if type(grid[x][y]) != int:
+                grid[x][y],check = givenumber(x,y)
+                if progress == False and check == True:
+                    progress = True
+    return progress
+
+
+def main():
+
+    global grid
+#    grid = hardtry()
+    grid = extremetry()
+
 #    grid = basictry()
-    grid = hardtry()
     for i in grid:
         print(i)
-    step = 1 
+    step = 1
     while not done():
-        progress = False
-        for x in range(len(grid)):
-            for y in range(len(grid[x])):
-                if type(grid[x][y]) != int:
-                    grid[x][y],check = givenumber(x,y)
-                    if progress == False and check == True:
-                        progress = True
-        print(f'step {step}')
-        step += 1
-        print(f'progress = {progress}')
-#        if progress == False:
-#            steptwo()
+        if stepone() == True:
+            print(f'step {step}')
+            step+=1
+#            print(f'progress = {progress}')
+        else:
+            steptwo()
         printgrid()
 
 
-
+if __name__ == "__main__":
+    main()
