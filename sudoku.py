@@ -146,6 +146,27 @@ def done():
             else:
                 print(f'not done ! {y}')
                 return False
+    for x in range(len(grid)):
+        modx = int(x/3)
+        for y in range(len(grid[x])):
+            mody = int(y/3)
+            for ex in range(len(grid)):
+                modex = int(ex/3)
+                for wy in range(len(grid[ex])):
+                    modwy = int(wy/3)
+                    sqr = (modex == modx and modwy == mody)
+                    row = (x == ex)
+                    cul = (y == wy)
+                    if sqr or row or cul:
+                        if (x!= ex and y != wy):
+                            if grid[x][y] == grid[ex][wy]:
+                                print("{} is on {}{} and {}{}".format(
+                                    grid[x][y],x,y,ex,wy))
+                                print("error")
+                                
+                                return True
+
+
     for row in grid:
         print(row)
     print("DONE!")
@@ -156,64 +177,58 @@ def printgrid():
         print(i)
     input()
 
-def uniqueinrow(num,x,y):
-    for yt in range(len(grid[x])):
-        if type(grid[x][yt]) != int and yt != y:
-            for i in grid[x][yt]:
-                if int(i) == num:
-                    return False
-    return True
+def uniquesteptwo(num,x,y):
+    modx = int(x/3)
+    mody = int(y/3)
+    for ex in range(len(grid)):
+        modex = int(ex/3)
+        for wy in range(len(grid[ex])):
+            modwy = int(ex/3)
+            if not (x == ex and y == wy):
+                sqr = (modex == modx and modwy == mody)
+                row = (x == ex)
+                cul = (y == wy)
 
-def uniqueinsquare(num,x,y):
-    modx = int(x/3)*3
-    mody = int(y/3)*3
-    for row in range(modx,modx+3):
-        for column in range(mody,mody+3):
-            if type(grid[row][column]) != int:
-                if row != x and column != y:
-                    for n in grid[row][column]:
-                        if int(n) == num:
+                if sqr or row or cul:
+                    if type(grid[ex][wy]) == int:
+                        if grid[ex][wy] == num:
                             return False
+                    else:
+                        for n in grid[ex][wy]:
+                            if int(n) == num:
+                                return False
+
     return True
-
-def uniqueinculomn(num,x,y):
-
-    for i in range(len(grid)):
-        if type(grid[i][y]) != int and i != x:
-            for n in grid[i][y]:
-                if int(n) == num:
-                    return False
-    return True
-
 
 def steptwochecking(x,y):
     pn = [int(i) for i in grid[x][y]]
     for i in pn:
-        if uniqueinrow(i,x,y) == True:
-            print(f"uir {i} = {x},{y}")
+        if uniquesteptwo(i,x,y) == True:
             return i
+#        if uniqueinrow(i,x,y) == True:
+#            print(f"uir {i} = {x},{y}")
+#            return i
 #        if uniqueinsquare(i,x,y) == True:
 #            print("uis")
 #            return i
-        if uniqueinculomn(i,x,y) == True:
-            print(f"uic {i} = {x},{y}")
-            return i
-
-
-
-
-
+#        if uniqueinculomn(i,x,y) == True:
+#            print(f"uic {i} = {x},{y}")
+#            return i
 
     return grid[x][y]
 
 def steptwo(): # if simple logic is not enough
+    progress = False
     for x in range(len(grid)):
         for y in range(len(grid[x])):
+            s = grid[x][y]
             if type(grid[x][y]) != int:
                 grid[x][y] = steptwochecking(x,y)
+            if s != grid [x][y]:
+                progress = True
 
 
-    return
+    return progress
 
 def stepone():
     progress = False
@@ -229,20 +244,20 @@ def stepone():
 def main():
 
     global grid
-    grid = hardtry()
+#    grid = hardtry()
 #    grid = extremetry()
 
-#    grid = basictry()
+    grid = basictry()
     for i in grid:
         print(i)
     step = 1
     while not done():
-        if stepone() == True:
+        if not stepone():
             print(f'step {step}')
             step+=1
 #            print(f'progress = {progress}')
-        else:
-            steptwo()
+        elif not steptwo():
+            print("st")
         printgrid()
 
 
