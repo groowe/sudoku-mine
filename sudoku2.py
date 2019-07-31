@@ -99,7 +99,7 @@ def clear(itemlist):
 
 
 def solvesqr(sqr,modx,mody):
-    # if num only in one row / culomn , clear other in stances
+    # if num only in one row / culomn , clear other instances
     # in row / culomn outside of sqr
 
     # if 2 nums occupy 2 places , clear other nums from those places
@@ -127,6 +127,7 @@ def solverow(row):
                                 unique = False
                 if unique == True:
                     row[item] = int(num)
+ 
     if oldrow != row:
         printgrid()
 #        print(oldrow)
@@ -152,6 +153,18 @@ def solve():
         cull = solverow(cull)
         for x in range(len(grid)):
             grid[x][y] = cull[x]
+    sqr = [[[] for i in range(3)] for i in range(3)]
+    for x in range(len(grid)):
+        modx = int(x/3)
+        for y in range(len(grid[x])):
+            mody = int(y/3)
+            sqr[modx][mody].append(grid[x][y])
+    print("sqr")
+    for x in range(len(sqr)):
+        for y in range(len(sqr[x])):
+            sqr[x][y] = solvesqr(sqr[x][y],x,y)
+            print(sqr[x][y])
+    input()
 
 
 
