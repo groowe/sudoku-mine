@@ -85,10 +85,34 @@ def basicnum():
                         print(f'progress')
 #                print(poss)
     return progress
+def clear(itemlist):
+    for item in itemlist:
+        if type(item) == int:
+            for i in range(len(itemlist)):
+                if type(itemlist[i]) == str:
 
+                    if str(item) in itemlist[i]:
+                        itemlist[i] = itemlist[i].replace(str(item),"")
+                        if len(itemlist[i]) == 1:
+                            itemlist[i] = int(itemlist[i])
+    return itemlist
+
+
+def solvesqr(sqr,modx,mody):
+    # if num only in one row / culomn , clear other in stances
+    # in row / culomn outside of sqr
+
+    # if 2 nums occupy 2 places , clear other nums from those places
+    # if 3 nums ...
+    # if 4 nums ...
+
+    # TBD
+
+    pass
 
 def solverow(row):
-    print("solverow")
+#    print("solverow")
+    row = clear(row)
     oldrow = [i for i in row]
 #    print(row)
 
@@ -105,20 +129,20 @@ def solverow(row):
                     row[item] = int(num)
     if oldrow != row:
         printgrid()
-        print(oldrow)
-        print(row)
-        input()
+#        print(oldrow)
+#        print(row)
+#        input()
     return row
 
 
 
 
 def solve():
-    print("solve")
+#    print("solve")
     
     # rows
     for x in range(len(grid)):
-        print("solve to row")
+#        print("solve to row")
         grid[x] = solverow(grid[x])
     # culomn
     for y in range(len(grid)):
@@ -134,6 +158,85 @@ def solve():
 
 
     input()
+def newtry2():
+    grid = [['0' for i in range(9)] for i in range(9)]
+
+    grid[0] = [0,4,0,0,0,8,0,0,0]
+    grid[1] = [0,0,8,0,0,0,6,7,0]
+    grid[2] = [0,9,0,0,2,0,0,0,0]
+    grid[3] = [9,0,0,8,0,0,4,0,2]
+    grid[4] = [0,2,0,7,0,4,0,3,0]
+    grid[5] = [1,0,4,0,0,3,0,0,5]
+    grid[6] = [0,0,0,0,6,0,0,5,0]
+    grid[7] = [0,5,9,0,0,0,1,0,0]
+    grid[8] = [0,0,0,3,0,0,0,2,0]
+    for i in grid:
+        print(i)
+        for i in range(len(grid)):
+            for s in range(len(grid[i])):
+                if grid[i][s] == 0:
+                    grid[i][s] = '123456789'
+    return grid
+
+def newtry3():
+    grid = [['0' for i in range(9)] for i in range(9)]
+
+    grid[0] = [0,0,0,0,0,0,2,9,0]
+    grid[1] = [2,1,0,4,0,3,0,0,0]
+    grid[2] = [3,0,0,0,5,2,0,0,0]
+    grid[3] = [0,0,5,0,0,0,0,6,0]
+    grid[4] = [0,7,0,6,0,8,0,4,0]
+    grid[5] = [0,8,0,0,0,0,7,0,0]
+    grid[6] = [0,0,0,7,6,0,0,0,8]
+    grid[7] = [0,0,0,8,0,1,0,3,4]
+    grid[8] = [0,4,1,0,0,0,0,0,0]
+    for i in grid:
+        print(i)
+        for i in range(len(grid)):
+            for s in range(len(grid[i])):
+                if grid[i][s] == 0:
+                    grid[i][s] = '123456789'
+    return grid
+
+def newtry():
+    grid = [['0' for i in range(9)] for i in range(9)]
+
+    grid[0] = [0,0,0,0,5,0,4,0,0]
+    grid[1] = [8,0,0,0,0,3,5,0,0]
+    grid[2] = [0,0,0,0,0,2,8,9,0]
+    grid[3] = [6,0,5,0,0,1,0,0,0]
+    grid[4] = [0,1,0,4,0,9,0,3,0]
+    grid[5] = [0,0,0,6,0,0,1,0,8]
+    grid[6] = [0,8,6,1,0,0,0,0,0]
+    grid[7] = [0,0,2,3,0,0,0,0,9]
+    grid[8] = [0,0,4,0,9,0,0,0,0]
+    for i in grid:
+        print(i)
+        for i in range(len(grid)):
+            for s in range(len(grid[i])):
+                if grid[i][s] == 0:
+                    grid[i][s] = '123456789'
+    return grid
+
+def newtry():
+    grid = [['0' for i in range(9)] for i in range(9)]
+
+    grid[0] = [0,0,0,0,5,0,4,0,0]
+    grid[1] = [8,0,0,0,0,3,5,0,0]
+    grid[2] = [0,0,0,0,0,2,8,9,0]
+    grid[3] = [6,0,5,0,0,1,0,0,0]
+    grid[4] = [0,1,0,4,0,9,0,3,0]
+    grid[5] = [0,0,0,6,0,0,1,0,8]
+    grid[6] = [0,8,6,1,0,0,0,0,0]
+    grid[7] = [0,0,2,3,0,0,0,0,9]
+    grid[8] = [0,0,4,0,9,0,0,0,0]
+    for i in grid:
+        print(i)
+        for i in range(len(grid)):
+            for s in range(len(grid[i])):
+                if grid[i][s] == 0:
+                    grid[i][s] = '123456789'
+    return grid
 
 def newtry():
     grid = [['0' for i in range(9)] for i in range(9)]
@@ -200,7 +303,9 @@ def main():
 
 
 if __name__ == "__main__":
-    grid = build_grid()
+#    grid = build_grid()
 #    grid = hardtry()
 #    grid = newtry()
+#    grid = newtry2()
+    grid = newtry3()
     main()
