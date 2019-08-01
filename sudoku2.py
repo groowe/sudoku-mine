@@ -162,15 +162,14 @@ def solve():
     print("sqr")
     for x in range(len(sqr)):
         for y in range(len(sqr[x])):
-            sqr[x][y] = solvesqr(sqr[x][y],x,y)
-            print(sqr[x][y])
+            solvesqr(sqr[x][y],x,y)
+#            print(sqr[x][y])
     input()
 
 
 
 
 
-    input()
 def newtry2():
     grid = [['0' for i in range(9)] for i in range(9)]
 
