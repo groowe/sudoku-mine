@@ -195,20 +195,79 @@ def printgrid():
 #        print(x)
         if x > 0 and x % 3 == 0:
             print("_"*27)
-
         s = preprint(grid[x])
-
 #        print(len(s))
         print("{}".format(s))
-
     print("_"*27)
+
+def done():
+    for x in grid:
+        for y in x:
+            if type(y) != int:
+                return False
+    return True
+
+def in_neighbours(num,x,y):
+    modx = int(x/3)
+    mody = int(y/3)
+    for a in range(9):
+        moda = int(a/3)
+        for b in range(9):
+            modb = int(b/3)
+            sqr = ((modx == moda) and (mody == modb))
+            row = (a == x)
+            cul = (y == b)
+            diff = (x!=a and y != b)
+            st  = (type(grid[a][b]) == int)
+            tr = ((sqr or row or cul) and diff and st)
+            if tr == True:
+                if grid[a][b] == num:
+                    return False
+    return True
+
+
+
+
+def solve():
+    global backgrid
+    global grid
+    for num in range(1,10):
+        for x in range(9):
+            for y in range(9):
+                if type(grid[x][y]) != int:
+                    av = in_neighbours(num,x,y)
+                    if av == True:
+                        backgrid[x][y] += str(num)
+    for x in range(9):
+        for y in range(9):
+            if type(backgrid[x][y]) == str:
+                if len(backgrid[x][y]) == 1:
+                    ins = int(backgrid[x][y])
+                    backgrid[x][y] = ins
+                    grid[x][y] = ins
+
+
+
+def initialize():
+    global backgrid
+    for x in range(9):
+        for y in range(9):
+            if type(grid[x][y]) == int:
+                backgrid[x][y] = grid[x][y]
+            else:
+                backgrid[x][y] = ""
 
 def main():
     printgrid()
-
+    initialize()
+    while not done():
+        solve()
+        printgrid()
+        print("_"*27)
 
 
 if __name__ == "__main__":
+    backgrid = [[None for i in range(9)] for i in range(9)]
     grid = newtry()
 #    grid = basictry()
 #    grid = newtry2()
@@ -217,4 +276,5 @@ if __name__ == "__main__":
 #    grid = newtry5()
 #    grid = newtry6()
     grid = standardize(grid)
+
     main()
