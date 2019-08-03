@@ -237,7 +237,8 @@ def solve():
                 if type(grid[x][y]) != int:
                     av = in_neighbours(num,x,y)
                     if av == True:
-                        backgrid[x][y] += str(num)
+                        if str(num) not in backgrid[x][y]:
+                            backgrid[x][y] += str(num)
     for x in range(9):
         for y in range(9):
             if type(backgrid[x][y]) == str:
@@ -245,6 +246,9 @@ def solve():
                     ins = int(backgrid[x][y])
                     backgrid[x][y] = ins
                     grid[x][y] = ins
+    for x in range(9):
+        print(backgrid[x])
+    input()
 
 
 
