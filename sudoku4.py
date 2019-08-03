@@ -271,8 +271,11 @@ def sqr2():
                                     if rowi != row:
                                         onlyrow = False
                 if onlyrow == True:
-                    s = mody*3
-                    # TBD
+                    s = (mody*3) + row
+                    for i in range(9):
+                        # TBD
+                        if type(grid[s][i])
+
 
 
         if modx == 2:
