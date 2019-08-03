@@ -62,9 +62,38 @@ def extreme():
     return standardize(grid)
 #    grid[0] = []
 
+def preprint(line):
+    s = str(line)
+    s = s.replace("None"," ").replace("[","|")
+    s = s.replace("]","|")
+    line = s
+    newline = ""
+    countchar = 0
+    checkchar = ","
+    for char in line:
+        if char == checkchar:
+            countchar +=1
+            if countchar % 3 == 0:
+                newline +='|'
+            else:
+                newline +=' '
+        else:
+            newline+=char
+    return newline
+
 def printgrid():
+    print("_"*27)
     for x in range(len(grid)):
-        print(grid[x])
+#        print('x')
+#        print(x)
+        if x > 0 and x % 3 == 0:
+            print("_"*27)
+        s = preprint(grid[x])
+#        print(len(s))
+        print("{}".format(s))
+    print("_"*27)
+
+
 
 def done():
     for x in range(9):
@@ -86,8 +115,7 @@ def clearnei(num,x,y):
             sqr = ((modx == moda) and (mody == modb))
             line = (x == a)
             culomn = (y == b)
-            same = ((x == a) and (y == b))
-            diff = not same
+            diff  = not ((x == a) and (y == b))
             st = (type(grid[a][b]) == str)
             act = ((sqr or line or culomn) and diff and st)
 #            act = (line and diff and st)
@@ -95,7 +123,13 @@ def clearnei(num,x,y):
 #                print(act)
                 grid[a][b] = grid[a][b].replace(str(num),"")
                 if len(grid[a][b]) == 1:
+                    if setu(grid[a][b],a,b) == True:
+
                         grid[a][b] = int(grid[a][b])
+                    else:
+                        print(f'{x}{y}  {a}{b}  {num}')
+                        printgrid()
+                        quit()
 
 
 
@@ -127,9 +161,45 @@ def row():
                                 if n in grid[x][i]:
                                     un = False
                     if un == True:
-                        grid[x][y] = int(n)
+                        if setu(n,x,y) == True:
+                            grid[x][y] = int(n)
 
-                        clearnei(grid[x][y],x,y)
+                            clearnei(grid[x][y],x,y)
+                        if check() == False:
+                            print(f'{x}{y} - {i}')
+                            printgrid()
+                            quit()
+
+
+def setu(num,x,y):
+    if type(num) == str:
+        if len(num ) > 1:
+            return False
+        num = int(num)
+
+
+
+
+    modx = int(x/3)
+    mody = int(y/3)
+    for a in range(9):
+        moda = int(a/3)
+        for b in range(9):
+            modb = int(b/3)
+            sqr = ((modx == moda) and (mody == modb))
+            line = (x == a)
+            culomn = (y == b)
+            diff  = not ((x == a) and (y == b))
+            st = (type(grid[a][b]) == int)
+            act = ((sqr or line or culomn) and diff and st)
+            if act and grid[a][b] == num:
+                print(f'{num} cannot be at {x}{y}')
+                print(f'it is at {a}{b} already')
+                printgrid()
+                input()
+                return False
+    return True
+
 def culomn():
     for y in range(9):
         for x in range(9):
@@ -142,8 +212,10 @@ def culomn():
                                 if n in grid[ex][y]:
                                     un = False
                     if un == True:
-                        grid[x][y] = int(n)
-                        clearnei(grid[x][y],x,y)
+                        if setu(grid[x][y],x,y) == True:
+
+                            grid[x][y] = int(n)
+                            clearnei(grid[x][y],x,y)
 
 def sqr():
     for x in range(9):
@@ -153,32 +225,103 @@ def sqr():
             if type(grid[x][y]) == str:
                 for n in grid[x][y]:
                     un = True
-                    for ex in range(9):
-                        modex = int(ex/3)
-                        for yp in range(9):
-                            modyp = int(yp/3)
-                            sq = ((modx == modex) and (mody == modyp))
-                            dif = not ((x == ex) and (y == yp))
-                            st = (type(grid[ex][yp]) == str) 
-                            if sq and dif and st:
-                                if n in grid[ex][yp]:
-                                    un = False
+                    for a in range(modx*3,(modx*3)+3):
+                        for b in range(mody*3,(mody*3)+3):
+                            diff = not( (x == a) and (y == b))
+                            i = (type(grid[a][b]) == int)
+                            s = (type(grid[a][b]) == str)
+                            if diff == True:
+                                if i == True:
+                                    if grid[a][b] == int(n):
+                                        grid[x][y] == grid[x][y].replace(n,"")
+                                if s == True:
+                                    if n in grid[a][b]:
+                                        un = False
                     if un == True:
-                        grid[x][y] = int(n)
+                        if setu(grid[x][y],x,y) == True:
+                            grid[x][y] = int(n)
 
 
-                        clearnei(grid[x][y],x,y)
+
+
+def sqr2():
+    modx = 0
+    mody = 0
+    while mody < 3:
+        sqr = []
+        for x in range(modx*3,(modx*3)+3):
+            for y in range(mody*3,(mody*3)+3):
+                sqr.append(grid[x][y])
+        
+        for item in range(len(sqr)):
+            if type(sqr(item)) == str:
+                cul = item % 3      # 0 1 2 0 1 2 0 1 2
+                row = int(item / 3) # 0 0 0 1 1 1 2 2 2
+                onlycul = True
+                onlyrow = True
+                for n in sqr(item):
+                    for i in range(len(sqr)):
+                        if i != item:
+                            if type(sqr(i)) == str:
+                                if n in sqr[i]:
+                                    culi = i %3
+                                    rowi = int(i/3)
+                                    if culi != cul:
+                                        onlycul = False
+                                    if rowi != row:
+                                        onlyrow = False
+                if onlyrow == True:
+                    s = mody*3
+                    # TBD
+
+
+        if modx == 2:
+            mody+=1
+            modx = 0
+        else:
+            modx += 1
+
+
+
+
+def check():
+    for x in range(9):
+        for y in range(9):
+            if type(grid[x][y] ) == int:
+                n = grid[x][y]
+                modx = int(x/3)
+                mody = int(y/3)
+                for a in range(9):
+                    moda = int(a/3)
+                    for b in range(9):
+                        modb = int(b/3)
+                        row = (a == x)
+                        culomn = (b ==y)
+                        sqr = ((modx == moda) and (mody == modb))
+                        diff = not ((x == a) and (y == b))
+                        if (row or culomn or sqr) and diff:
+                            if grid[a][b] == n:
+                                print(f'{x}{y} {a}{b} {n}')
+                                return False
+    return True
+
 
 def main():
+    step = 0
     while not done():
 
         initial_solve()
         printgrid()
-        input()
+        if check()== False: # aaaaaaaaaaa .... 
+            print("error")
+        step +=1
+        if step % 10 == 0:
+            print(step)
+            input()
 if __name__ == "__main__":
-    grid = easy()
+#    grid = easy()
 #    grid = medium()
-#    grid = hard()
+    grid = hard()
 #    grid = extreme()
     printgrid()
     main()
