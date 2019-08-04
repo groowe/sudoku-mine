@@ -148,7 +148,8 @@ def initial_solve():
 
 #    culomn()
 #    sqr()
-    sqr2()
+#    sqr2()
+    sqr3()
 
 
 def row():
@@ -244,7 +245,27 @@ def sqr():
                             grid[x][y] = int(n)
 
 
+def sqr3():
+    modx = 0
+    mody = 0
+    while modx < 3:
+        sqr = []
 
+        for x in range(modx*3,(modx*3)+3):
+            for y in range(mody*3,(mody*3)+3):
+                sqr.append(grid[x][y])
+        print(modx,mody)
+        print(sqr)
+        
+
+
+
+        if mody == 2:
+            mody = 0
+            modx +=1
+        else:
+            mody +=1
+    quit()
 
 def sqr2():
     modx = 0 #  = int(x/3)
