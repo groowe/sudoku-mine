@@ -144,9 +144,11 @@ def initial_solve():
         for y in range(9):
             if type(grid[x][y]) == int:
                 clearnei(grid[x][y],x,y)
-    row()
-    culomn()
-    sqr()
+#    row()
+
+#    culomn()
+#    sqr()
+    sqr2()
 
 
 def row():
@@ -245,24 +247,30 @@ def sqr():
 
 
 def sqr2():
-    modx = 0
-    mody = 0
-    while mody < 3:
+    modx = 0 #  = int(x/3)
+    mody = 0 #  = int(y/3)
+    while modx < 3:
         sqr = []
+
         for x in range(modx*3,(modx*3)+3):
             for y in range(mody*3,(mody*3)+3):
                 sqr.append(grid[x][y])
         
-        for item in range(len(sqr)):
-            if type(sqr(item)) == str:
+        print(modx,mody)
+        print(sqr)
+
+        
+        for item in range(9):
+            if type(sqr[item]) == str:
+
                 cul = item % 3      # 0 1 2 0 1 2 0 1 2
                 row = int(item / 3) # 0 0 0 1 1 1 2 2 2
                 onlycul = True
                 onlyrow = True
-                for n in sqr(item):
-                    for i in range(len(sqr)):
+                for n in sqr[item]:
+                    for i in range(9):
                         if i != item:
-                            if type(sqr(i)) == str:
+                            if type(sqr[i]) == str:
                                 if n in sqr[i]:
                                     culi = i %3
                                     rowi = int(i/3)
@@ -271,18 +279,31 @@ def sqr2():
                                     if rowi != row:
                                         onlyrow = False
                 if onlyrow == True:
-                    s = (mody*3) + row
+                    s = (modx*3) + row
                     for i in range(9):
-                        # TBD
-                        if type(grid[s][i])
+                        modi = int(i/3)
+                        if modi != mody:
+                            if type(grid[s][i]) == str:
+                                grid[s][i] = grid[s][i].replace(n,"")
+                                if len(grid[s][i]) == 1:
+                                    grid[s][i] = int(grid[s][i])
+                if onlycul == True:
+                    i = (mody*3) + cul
+                    for s in range(9):
+                        mods = int(s/3)
+                        if mods != modx:
+                            if type(grid[s][i]) == str:
+                                grid[s][i] = grid[s][i].replace(n,"")
+                                if len(grid[s][i]) == 1:
+                                    if setu(n,s,i) == True:
+                                        grid[s][i] = int(grid[s][i])
 
 
-
-        if modx == 2:
-            mody+=1
-            modx = 0
+        if mody == 2:
+            modx+=1
+            mody = 0
         else:
-            modx += 1
+            mody += 1
 
 
 
@@ -321,10 +342,12 @@ def main():
         if step % 10 == 0:
             print(step)
             input()
+        if done():
+            printgrid()
 if __name__ == "__main__":
-#    grid = easy()
+    grid = easy()
 #    grid = medium()
-    grid = hard()
+#    grid = hard()
 #    grid = extreme()
     printgrid()
     main()
