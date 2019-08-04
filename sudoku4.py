@@ -245,6 +245,68 @@ def sqr():
                             grid[x][y] = int(n)
 
 
+def solvesqr(sqr,modx,mody):
+    for cell in range(9):
+        rowcell = int(cell/3)
+        culcell = cell % 3
+        if type(sqr[cell]) == str:
+            for numstr in sqr[cell]:
+                uniquerow = True
+                uniquecul = True
+                count = 1
+                for c in range(9):
+                    if c != cell:
+                        rowc = int(c/3)
+                        cc = c % 3
+                        if type(sqr[c]) == str:
+                            if numstr in sqr[c]:
+                                count += 1
+                                if rowc != rowcell:
+                                    uniquerow = False
+                                if cc != culcell:
+                                    uniquecul = False
+                        if type(sqr[c]) == int:
+                            if int(numstr) == sqr[c]:
+                                uniquerow = False
+                                uniquecell = False
+                                count = 99
+                if count == 1:
+                    add = setu(int(numstr),(modx*3)+rowcell,(mody*3)+culcell)
+                    print(sqr)
+                    print(int(numstr),(modx*3)+rowcell,(mody*3)+culcell)
+                    if add == True:
+                        ex = (modx*3)+rowcell
+                        ey = (mody*3)+culcell
+                        grid[ex][ey] = int(numstr)
+
+                    input()
+                if uniquerow == True:
+                    clearrow(numstr,(modx*3)+rowcell,mody)
+                if uniquecul == True:
+                    clearcul(numstr,(mody*3)+culcell,modx)
+
+#                                print(sqr[c])
+def clearrow(fromnum,rownum,excepty):
+    for y in range(9):
+        mody = int(y/3)
+        if mody != excepty:
+            if type(grid[rownum][y]) == str:
+                grid[rownum][y] = grid[rownum][y].replace(fromnum,"")
+
+
+def clearcul(fromnum,culnum,exceptx):
+    for x in range(9):
+        modx = int(x/3)
+        if modx != exceptx:
+            if type(grid[x][culnum]) == str:
+                grid[x][culnum] = grid[x][culnum].replace(fromnum,"")
+
+
+
+
+
+
+
 def sqr3():
     modx = 0
     mody = 0
@@ -257,7 +319,7 @@ def sqr3():
         print(modx,mody)
         print(sqr)
         
-
+        solvesqr(sqr,modx,mody)
 
 
         if mody == 2:
@@ -265,7 +327,8 @@ def sqr3():
             modx +=1
         else:
             mody +=1
-    quit()
+    input()
+
 
 def sqr2():
     modx = 0 #  = int(x/3)
