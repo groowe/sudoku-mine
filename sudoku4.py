@@ -149,7 +149,7 @@ def initial_solve():
 #    culomn()
 #    sqr()
 #    sqr2()
-    sqr3()
+#    sqr3()
 
 
 def row():
@@ -278,6 +278,8 @@ def solvesqr(sqr,modx,mody):
                         ex = (modx*3)+rowcell
                         ey = (mody*3)+culcell
                         grid[ex][ey] = int(numstr)
+                        print(ex,ey,numstr)
+                        printgrid()
 
                     input()
                 if uniquerow == True:
@@ -287,19 +289,31 @@ def solvesqr(sqr,modx,mody):
 
 #                                print(sqr[c])
 def clearrow(fromnum,rownum,excepty):
+    print("clearrow")
+    print(fromnum,rownum,excepty)
     for y in range(9):
         mody = int(y/3)
         if mody != excepty:
             if type(grid[rownum][y]) == str:
-                grid[rownum][y] = grid[rownum][y].replace(fromnum,"")
+                if len(grid[rownum][y]) > 1:
+                    grid[rownum][y] = grid[rownum][y].replace(fromnum,"")
+                if len(grid[rownum][y]) == 1:
+                    grid[rownum][y] = int(grid[rownum][y])
+
 
 
 def clearcul(fromnum,culnum,exceptx):
+    print("clearcul")
+    print(fromnum,culnum,exceptx)
     for x in range(9):
         modx = int(x/3)
         if modx != exceptx:
             if type(grid[x][culnum]) == str:
-                grid[x][culnum] = grid[x][culnum].replace(fromnum,"")
+                if len(grid[x][culnum]) > 1:
+                    grid[x][culnum] = grid[x][culnum].replace(fromnum,"")
+                if len(grid[x][culnum]) == 1:
+                    grid[x][culnum] = int(grid[x][culnum])
+                    clearnei(grid[x][culnum],x,culnum)
 
 
 
@@ -310,6 +324,10 @@ def clearcul(fromnum,culnum,exceptx):
 def sqr3():
     modx = 0
     mody = 0
+    for x in range(9):
+        for y in range(9):
+            if type(grid[x][y]) == int:
+                clearnei(grid[x][y],x,y)
     while modx < 3:
         sqr = []
 
@@ -343,7 +361,10 @@ def sqr2():
         print(modx,mody)
         print(sqr)
 
-        
+        if grid[2][0] == grid[1][1]:
+            printgrid()
+            print("nooooow")
+            input()
         for item in range(9):
             if type(sqr[item]) == str:
 
@@ -419,6 +440,7 @@ def main():
     while not done():
 
         initial_solve()
+        sqr3()
         printgrid()
         if check()== False: # aaaaaaaaaaa .... 
             print("error")
