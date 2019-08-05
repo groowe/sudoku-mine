@@ -63,9 +63,18 @@ def extreme():
 #    grid[0] = []
 
 def preprint(line):
-    s = str(line)
+    s = []
+    for item in line:
+        if type(item) == int:
+            s.append(item)
+        else:
+            s.append(" ")
+
+#    s = [" " if type(x) == int else x for x in line]
+#    s = [if type(x) == int x for x else " " for x in line]
+    s = str(s)
     s = s.replace("None"," ").replace("[","|")
-    s = s.replace("]","|")
+    s = s.replace("]","|").replace("\'","")
     line = s
     newline = ""
     countchar = 0
@@ -322,6 +331,8 @@ def main():
     initial_solve()
     step = 0
     solved = done()
+    printgrid()
+    input()
     print("main")
     print(solved)
     while not solved:
