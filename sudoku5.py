@@ -231,7 +231,8 @@ def sqr3():
 #                                print(f'sqr[{a}] = {sqr[a]}')
                                 if rowa != rownum:
                                     uniqueinrow = False
-                                else:
+#                                else:
+
 #                                    print(f'cula = {cula},culnum = {culnum}')
                                 if cula != culnum:
                                     uniqueincul = False
@@ -312,9 +313,11 @@ def isvalid():
                                     if len(grid[ex][ey]) == 1:
                                         return False
                                     grid[ex][ey] = grid[ex][ey].replace(str(num),"")
+
+                                    return isvalid()
+                                    grid[ex][ey] = int(grid[ex][ey])
                                     #if len(grid[ex][ey]) == 1:
                                     #    grid[ex][ey] = int(grid[ex][ey])
-                                    return isvalid()
     if allint == True:
         printgrid()
         print("solved")
@@ -535,6 +538,7 @@ def guess(current = True):
         print(f"num = {num}")
         grid[cell[1]][cell[2]] = num
         gridlist[-1][-1] = cell
+        print(gridlist[-1])
 
 
 
@@ -608,10 +612,11 @@ def main():
 def main():
     initial_solve()
     while not done():
-        for i in range(100):
+        for i in range(10):
             solveit()
+            print()
 
-        guess(isvalid)
+        guess(isvalid())
         printgrid()
         print("{} gridlist".format(len(gridlist)))
     printgrid()
