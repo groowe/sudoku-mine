@@ -85,6 +85,11 @@ def hardest2():
     grid[8] = [0,0,7,0,0,0,3,0,0]
     return standardize(grid)
 
+def hardestinvalid():
+    grid  = hardest()
+    grid[8][8] = 3
+    return grid
+
 
 def basicgrid():
 
@@ -223,8 +228,8 @@ def showguesses():
     if len(gridlist) > 0:
         for g in gridlist:
             s = g[-1]
-            print(s)
-        input()
+#            print(s)
+#        input()
 
 def possible():
     for x in range(9):
@@ -243,10 +248,11 @@ def solve_by_guess():
     global grid
     solved ,valid = done()
 #   # print("step 1")
+    printgrid()
     while not solved:
 #        showguesses()
 
-        printgrid()
+#        printgrid()
         solved,valid = done()
 #       # print("step 2")
 #       # print(solved,valid)
@@ -260,7 +266,7 @@ def solve_by_guess():
 #           # print(cell)
 #           # print(grid[cell[0]][cell[1]])
             grid = cleanup(grid)
-            printgrid()
+#            printgrid()
 #           # input()
 #           # print("step 3")
 #       # print(possible())
@@ -279,12 +285,12 @@ def solve_by_guess():
 #                    print(x2,y2)
 #                    input()
                     if x1 == x2 and y1 == y2:
-                        print(x1,y1)
-                        print(x2,y2)
+#                        print(x1,y1)
+#                        print(x2,y2)
                         invalid = str(gridlist[-1][1][2])
                         gridlist[-2][-1][3] = gridlist[-2][-1][3].replace(invalid,"")
 
-#               # print(len(gridlist))
+#                print(len(gridlist))
                 gridlist = gridlist[:-1]
 
 #               # print(len(gridlist))
@@ -304,8 +310,9 @@ def solve_by_guess():
  #          # print(type(y))
  #          # print(type(value))
             grid[x][y] = value
-           # print(x,y,value)
-           # print(grid[x][y])
+            print(x,y,value)
+            print(grid[x][y])
+            printgrid()
 #        input()
 #        printgrid(False)
        # input()
@@ -320,18 +327,27 @@ def newgrid():
     temp = [ ["123456789" for i in range(9)] for i in range(9)]
     for i in range(9):
         temp[i][i] = i+1
-    cleanup(temp)
+    temp = cleanup(temp)
     return temp
             
+def extremeinvalid():
+    grid = extreme()
+    grid[4][4] = 6
+    return grid
+
 
 if __name__ == "__main__":
 #    grid = easy()
 #    grid = medium()
 #    grid = hard()
+    grid = extreme()
 #    grid = hardest()
-    grid = hardest2()
+#    grid = hardest2()
 #    grid = newgrid()
-    printgrid(False)
+#    printgrid(False)
+#    grid = hardestinvalid()
+#    grid = extremeinvalid()
+
     gridlist = []
     solve_by_guess()
 
