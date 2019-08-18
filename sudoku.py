@@ -1,3 +1,30 @@
+# sudoku
+# source of ideas :
+# https://www.rharriso.com/generating-sudoku-boards-pt-1-structures.html?source=post_page---------------------------
+
+#One effective strategy is to look at each cell in turn and then try to eliminate possible numbers. The more neighbors (which I define as cells that are in the same row, column, or block) that a cell has filled in the fewer possibility options that cell has. If a cell only has one valid possible move, is can be filled. As cells get filled it’s neighbors get fewer and fewer options, and more cells can be filled.
+
+#More difficult puzzles require a bit more work as there aren’t enough cells filled in for this simple method.
+
+
+# naive way :
+#####
+#Rough Naive Algorithm 
+
+# Start at first cell
+# Pick a value that isn’t present in any neighbors
+# If at last cell, exit
+# Otherwise go to next cell
+# Go to step 2
+
+# this py is solving it by trying some logic (enough most of the times)
+# if not solved by logic,( guess  + logic) untill solved
+# standalone naive way is done by solve_by_guess()
+# logic (one step) is done by solve()
+# naive way (one step) is done by guessing()
+# combination of it is done by main() # obviously
+
+
 #define grid
 def easy():
     grid = basicgrid()
