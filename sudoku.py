@@ -245,9 +245,9 @@ def main():
 
     global grid
 #    grid = hardtry()
-#    grid = extremetry()
+    grid = extremetry()
 
-    grid = basictry()
+#    grid = basictry()
     for i in grid:
         print(i)
     step = 1
@@ -256,8 +256,8 @@ def main():
             print(f'step {step}')
             step+=1
 #            print(f'progress = {progress}')
-        elif not steptwo():
-            print("st")
+            if not steptwo():
+                print("st")
         printgrid()
 
 

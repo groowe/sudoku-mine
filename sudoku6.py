@@ -326,7 +326,7 @@ def solve():
             mody +=1
     if progress == True:
         printgrid()
-        input()
+#        input()
  
     return progress
 """
@@ -380,7 +380,7 @@ if __name__ == "__main__":
         if count > 20:
             if count % 10 == 0:
                 printgrid()
-                input()
-                printgrid(False)
-                input()
+#                input()
+#                printgrid(False)
+#                input()
 
