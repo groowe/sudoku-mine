@@ -768,12 +768,14 @@ def text_objects(text,font,color = (0,0,0)):
 
 
 
+
 if __name__ == "__main__":
 #    grid = easy()
 #    grid = medium()
 #    grid = hard()
 #    grid = extreme()
-    grid = hardest()
+#    grid = hardest()
+    grid = empty()
 #    grid = impos1()
 #    grid = impos2()
 #    grid = impos3()
@@ -813,9 +815,11 @@ if __name__ == "__main__":
         pygame.display.update()
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        main_logic()
+#        main_logic()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+                quitgame()
+            if event.type == pygame.QUIT:
                 quitgame()
 #        print(dir(sudoku))
 #        main()

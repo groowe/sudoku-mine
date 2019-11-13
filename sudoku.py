@@ -1,3 +1,5 @@
+#!/usr/bin/env python   
+
 # sudoku
 # source of ideas :
 # https://www.rharriso.com/generating-sudoku-boards-pt-1-structures.html?source=post_page---------------------------
@@ -38,6 +40,7 @@ def easy():
     grid[7] = [8,6,0,9,3,4,1,0,2]
     grid[8] = [7,0,3,0,5,1,0,8,0]
     grid = standardize(grid)
+    print("whoooo")
     return grid
 
 def medium():
@@ -651,6 +654,7 @@ def main():
 #        quit()
     printgrid()
     print(guessed)
+    return True
 
     print(validate_solution())
 
@@ -708,13 +712,151 @@ def impos3():
     grid[7] = [0,0,0,3,0,0,4,0,0]
     grid[8] = [2,0,0,0,0,0,0,8,0]
     grid = standardize(grid)
+    print("impos3 whohooo")
     return grid
 
 
 def emptygrid():
     return [["123456789" for i in range(9)] for i in range(9)]
 
+grid = emptygrid()
+
+gridlist = []
+guessed = 0
+
+#### GUI PART #######
+import tkinter as tk
+from tkinter import ttk , Menu
+import tkinter.font as font
+win = tk.Tk()
+
+win.title("Sudoku")
+globalvalue = 1
+
+def globalv(n):
+    global globalvalue
+    globalvalue = n
+    print(globalvalue)
+    return n
+#for i in range(1,10):
+#    s = "Button"+str(i)
+#    a = i
+#    if i > 3:
+#        a+=1
+#        if i > 6:
+#            a+=1
+#    s = tk.Button(win,text=str(i),width=3,height=3,command= lambda *args :  globalv(i))
+#    s.grid(column=str(a),row=3)
+#    s.pack()
+
+s1 = tk.Button(win,text="1",width=3,height=3,command= lambda *args : globalv(1))
+s1.grid( column="1",row=3)
+s2 = tk.Button(win,text="2",width=3,height=3,command= lambda *args : globalv(2))
+s2.grid(column="2",row=3)
+s3 = tk.Button(win,text="3",width=3,height=3,command= lambda *args : globalv(3))
+s3.grid(column="3",row=3)
+s4 = tk.Button(win,text="4",width=3,height=3,command= lambda *args : globalv(4))
+s4.grid(column="5",row=3)
+s5 = tk.Button(win,text="5",width=3,height=3,command= lambda *args : globalv(5))
+s5.grid(column="6",row=3)
+s6 = tk.Button(win,text="6",width=3,height=3,command= lambda *args : globalv(6))
+s6.grid(column="7",row=3)
+s7 = tk.Button(win,text="7",width=3,height=3,command= lambda *args : globalv(7))
+s7.grid(column="9",row=3)
+s8 = tk.Button(win,text="8",width=3,height=3,command= lambda *args : globalv(8))
+s8.grid(column="10",row=3)
+s9 = tk.Button(win,text="9",width=3,height=3,command= lambda *args : globalv(9))
+s9.grid(column="11",row=3)
+
+
+
+def showgrid():
+    global grid
+    for a in range(9):
+        for b in range(9):
+            x = str(a)+str(b)
+            if type(grid[a][b]) == int:
+                text = str(grid[a][b])
+#                size = 30
+#                weight = "bold"
+#                helv36 = font.Font(family='Helvetica', size=15)
+
+            else:
+                text = grid[a][b]
+#                size = 10
+#                weight = "italic"
+#    
+#                helv36 = font.Font(family='Helvetica', size=10)
+#                text = str(grid[a][b])
+
+            x = tk.Button(win,text=text,width=3,height=3)
+            c = b
+            if b > 2:
+                c+=1
+                if b > 5:
+                    c+=1
+            d = a
+            if a > 2:
+                d+=1
+                if a > 5:
+                    d+=1
+
+ 
+            x.grid(column=str(c+1),row=str(d+5))
+
+
+
+def maintwo():
+    s= main()
+    while s != True:
+        s = main()
+
+#    if main() == True:
+    showgrid()
+
+
+def setgrid(st):
+    global grid
+    grid = st()
+    showgrid()
+    printgrid()
+    print(st)
+    print(grid)
+
 if __name__ == "__main__":
+    showgrid()
+    menuBar = Menu(win)
+    win.config(menu=menuBar)
+    
+    #gridbar = Menu(win)
+    #win.config(menu=gridbar)
+    
+    gridbar = Menu(menuBar,tearoff=0)
+    #win.config(menu=gridbar)
+
+    gridbar.add_command(label="easy",command=lambda * args: setgrid(easy))
+    gridbar.add_command(label="medium",command=lambda * args: setgrid(medium))
+    gridbar.add_command(label="hard",command=lambda * args: setgrid(hard))
+    gridbar.add_command(label="extreme",command=lambda * args: setgrid(extreme))
+    gridbar.add_command(label="hardest",command=lambda * args: setgrid(hardest))
+    gridbar.add_command(label="hardest2",command=lambda * args: setgrid(hardest2))
+    gridbar.add_command(label="impos1",command=lambda * args: setgrid(impos1))
+    gridbar.add_command(label="impos2",command=lambda * args: setgrid(impos2))
+    gridbar.add_command(label="impos3",command=lambda * args: setgrid(impos3))
+    gridbar.add_command(label="hardestinvalid",command=lambda * args: setgrid(hardestinvalid))
+    gridbar.add_command(label="extremeinvalid",command=lambda * args: setgrid(extremeinvalid))
+    gridbar.add_command(label="emptygrid",command=lambda * args: setgrid(emptygrid))
+    menuBar.add_cascade(label="set",menu=gridbar)
+    
+    fileMenu = Menu(menuBar,tearoff=0)
+    fileMenu.add_command(label="exit",command=exit)
+    fileMenu.add_command(labe="solve",command=maintwo)
+    menuBar.add_cascade(label="File",menu=fileMenu)
+    
+    #gridlist = []
+    #guessed = 0
+    win.mainloop()
+
 #    grid = easy()
 #    grid = medium()
 #    grid = hard()
@@ -722,17 +864,17 @@ if __name__ == "__main__":
 #    grid = hardest()
 #    grid = impos1()
 #    grid = impos2()
-    grid = impos3()
+#    grid = impos3()
 #    grid = hardest2()
 #    grid = newgrid()
 #    printgrid(False)
 #    grid = hardestinvalid()
 #    grid = extremeinvalid()
 #    grid = emptygrid()
-    gridlist = []
+#    gridlist = []
 #    solve_by_guess()
-    guessed = 0
-    main()
+#    guessed = 0
+#    main()
     
 
 
