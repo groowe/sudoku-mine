@@ -750,88 +750,138 @@ def callback(event):
 
 
 
-mainframe = tk.Frame(win,width=900,height=900)
+mainframe = tk.Frame(win,width=800,height=800)
 mainframe.bind("<Key>",key)
 mainframe.bind("<Button-1>",callback)
 mainframe.pack()
 
 
-"""
-s1 = tk.Button(win,text="1",width=3,height=3,command= lambda *args : globalv(1))
-s1.grid( column="1",row=3)
-s2 = tk.Button(win,text="2",width=3,height=3,command= lambda *args : globalv(2))
-s2.grid(column="2",row=3)
-s3 = tk.Button(win,text="3",width=3,height=3,command= lambda *args : globalv(3))
-s3.grid(column="3",row=3)
-s4 = tk.Button(win,text="4",width=3,height=3,command= lambda *args : globalv(4))
-s4.grid(column="5",row=3)
-s5 = tk.Button(win,text="5",width=3,height=3,command= lambda *args : globalv(5))
-s5.grid(column="6",row=3)
-s6 = tk.Button(win,text="6",width=3,height=3,command= lambda *args : globalv(6))
-s6.grid(column="7",row=3)
-s7 = tk.Button(win,text="7",width=3,height=3,command= lambda *args : globalv(7))
-s7.grid(column="9",row=3)
-s8 = tk.Button(win,text="8",width=3,height=3,command= lambda *args : globalv(8))
-s8.grid(column="10",row=3)
-s9 = tk.Button(win,text="9",width=3,height=3,command= lambda *args : globalv(9))
-s9.grid(column="11",row=3)
-"""
+#"""
+#s1 = tk.Button(win,text="1",width=3,height=3,command= lambda *args : globalv(1))
+#s1.grid( column="1",row=3)
+#s2 = tk.Button(win,text="2",width=3,height=3,command= lambda *args : globalv(2))
+#s2.grid(column="2",row=3)
+#s3 = tk.Button(win,text="3",width=3,height=3,command= lambda *args : globalv(3))
+#s3.grid(column="3",row=3)
+#s4 = tk.Button(win,text="4",width=3,height=3,command= lambda *args : globalv(4))
+#s4.grid(column="5",row=3)
+#s5 = tk.Button(win,text="5",width=3,height=3,command= lambda *args : globalv(5))
+#s5.grid(column="6",row=3)
+#s6 = tk.Button(win,text="6",width=3,height=3,command= lambda *args : globalv(6))
+#s6.grid(column="7",row=3)
+#s7 = tk.Button(win,text="7",width=3,height=3,command= lambda *args : globalv(7))
+#s7.grid(column="9",row=3)
+#s8 = tk.Button(win,text="8",width=3,height=3,command= lambda *args : globalv(8))
+#s8.grid(column="10",row=3)
+#s9 = tk.Button(win,text="9",width=3,height=3,command= lambda *args : globalv(9))
+#s9.grid(column="11",row=3)
+#"""
 
 
-def showgrid():
-    global grid
-    for a in range(9):
-        for b in range(9):
-            x = str(a)+str(b)
-            if type(grid[a][b]) == int:
-                text = str(grid[a][b])
-#                size = 30
-#                weight = "bold"
-#                helv36 = font.Font(family='Helvetica', size=15)
-
-            else:
-                text = grid[a][b]
-#                size = 10
-#                weight = "italic"
-#    
-#                helv36 = font.Font(family='Helvetica', size=10)
+#def showgrid():
+#    global grid
+#    for a in range(9):
+#        for b in range(9):
+#            x = str(a)+str(b)
+#            if type(grid[a][b]) == int:
 #                text = str(grid[a][b])
+##                size = 30
+##                weight = "bold"
+##                helv36 = font.Font(family='Helvetica', size=15)
+#
+#            else:
+#                text = grid[a][b]
+##                size = 10
+##                weight = "italic"
+##    
+##                helv36 = font.Font(family='Helvetica', size=10)
+##                text = str(grid[a][b])
+#
+#            x = tk.Button(win,text=text,width=3,height=3)
+#            c = b
+#            if b > 2:
+#                c+=1
+#                if b > 5:
+#                    c+=1
+#            d = a
+#            if a > 2:
+#                d+=1
+#                if a > 5:
+#                    d+=1
+#
+# 
+#            x.grid(column=str(c+1),row=str(d+5))
 
-            x = tk.Button(win,text=text,width=3,height=3)
-            c = b
-            if b > 2:
-                c+=1
-                if b > 5:
-                    c+=1
-            d = a
-            if a > 2:
-                d+=1
-                if a > 5:
-                    d+=1
 
- 
-            x.grid(column=str(c+1),row=str(d+5))
 
-def showgrid2():
+def showgrid3():
+#   00 01 02
+#   10 11 12
+#   20 21 22
+    dark = ["01","10","12","21"]
     global grid
-    for a in range(9):
-        for b in range(9):
-            s = str(a)+str(b)
+    for x in range(9):
+        modx = int(x/3)
+        for y in range(9):
+            mody = int(y/3)
 
-            bd = 2
-            bg = "grey"
-            isnum = ( grid[a][b] == selectednumber)
-            hasnum = (str(selectednumber) in str(grid[a][b]))
-            if isnum:
-                bd = 5
+            xy = str(modx)+str(mody)
+            if xy in dark:
+#                bg="dark green"
+                bg = "light blue"
+                    
+                activebackground= "light blue"
+            else:
+#                bg="green"
+                bg = "grey"
+                activebackground = "grey"
 
-            if isnum or hasnum:
+            f = tk.Frame(mainframe,width=80,height=80)
+            text = gridvalue(x,y)
+#            text = grid[x][y]
+#            bg = butbg(x,y)
+            state= "active"
+            fg = "black"
+            myfont = font.Font(size=10)
+            if type(grid[x][y]) == int:
+                state="disabled"
+                fg = "black"
+                myfont = font.Font(size=30,weight="bold")
+            b = tk.Button(f,text=text,state=state,fg=fg,font=myfont,bg=bg,activebackground=activebackground)
+#            b["text"] =  gridvalue(x,y)
+#            print(f"{b['text']}")
+            f.rowconfigure(0,weight = 1)
+            f.columnconfigure(0,weight = 1)
+            f.grid_propagate(0)
+#            print(f"a = <{x}>, b = <{y}>")
+            f.grid(row = x,column = y)
+            b.grid(sticky = "NWSE")
 
-                bg = "darkgrey"
-            s = tk.Button(mainframe,text=str(grid[a][b]),
-                    #width=100,height=100,
-                    bd=bd,bg=bg)
-            s.grid(row=a,column=b)#,sticky="nesw")
+def gridvalue(x,y):
+    global grid
+#    print(f"x = {x}, y = {y}, value = {grid[x][y]}")
+    return str(grid[x][y])
+
+#def showgrid2():
+#    global grid
+#    for a in range(9):
+#        for b in range(9):
+#            s = str(a)+str(b)
+#
+#            bd = 2
+#            bg = "grey"
+#            isnum = ( grid[a][b] == selectednumber)
+#            hasnum = (str(selectednumber) in str(grid[a][b]))
+#            if isnum:
+#                bd = 5
+#
+#            if isnum or hasnum:
+#
+#                bg = "darkgrey"
+#            s = tk.Button(mainframe,text=str(grid[a][b]),
+#                    #width=100,height=100,
+#                    bd=bd,bg=bg)
+#            s.grid(row=a,column=b)#,sticky="nesw")
 #            frame = tk.Frame(mainframe,width=100,height=100,bd=bd,bg=bg)
 #            frame.grid(row=a,column=b)
 #            s = tk.Button(frame,text=str(grid[a][b]))
@@ -849,14 +899,16 @@ def maintwo():
 
 #    if main() == True:
 #    showgrid()
-    showgrid2()
+#    showgrid2()
+    showgrid3()
 
 
 def setgrid(st):
     global grid
     grid = st()
 #    showgrid()
-    showgrid2()
+#    showgrid2()
+    showgrid3()
     printgrid()
     print(st)
     print(grid)
@@ -914,6 +966,3 @@ if __name__ == "__main__":
 #    solve_by_guess()
 #    guessed = 0
 #    main()
-    
-
-
