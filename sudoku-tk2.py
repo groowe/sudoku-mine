@@ -731,7 +731,7 @@ import tkinter.font as font
 win = tk.Tk()
 
 win.title("Sudoku")
-selectednumber = 0
+selectednumber = None
 
 def key(event):
     try:
@@ -739,21 +739,31 @@ def key(event):
         global selectednumber
         print("pressed", repr(event.char))
         if 0 < int(event.char) < 10:
-            selectednumber = (event.char)
+            selectednumber = int(event.char)
     except:
         return
     print(selectednumber)
 
 def callback(event):
     mainframe.focus_set()
+#    print(f"{x}{y}")
     print("clicked at",event.x, event.y)
 
-
-
-mainframe = tk.Frame(win,width=800,height=800)
-mainframe.bind("<Key>",key)
-mainframe.bind("<Button-1>",callback)
-mainframe.pack()
+def call(event):
+    mainframe.focus_set()
+    callback(event)
+def mf():
+    global mainframe
+    try:
+        mainframe.destroy()
+    except:
+        print()
+        
+    mainframe = tk.Frame(win,width=800,height=800)
+    mainframe.bind("<Key>",key)
+    mainframe.bind("<Button-1>",callback)
+    mainframe.pack()
+    return True
 
 
 #"""
@@ -813,16 +823,30 @@ mainframe.pack()
 #            x.grid(column=str(c+1),row=str(d+5))
 
 
+def tryout(x,y):
+    global grid
+    print(f"{x}{y} = {grid[x][y]}")
+    change = False
+    if selectednumber != None:
 
+        if str(selectednumber) in grid[x][y]:
+            grid[x][y] = selectednumber
+            change = True
+    if change:
+        cleanup(grid)
+        showgrid3()
 def showgrid3():
 #   00 01 02
 #   10 11 12
 #   20 21 22
+    s = mf()
     dark = ["01","10","12","21"]
     global grid
     for x in range(9):
         modx = int(x/3)
         for y in range(9):
+
+#            g = lambda sx = x , iy = y : clear(sx,iy) 
             mody = int(y/3)
 
             xy = str(modx)+str(mody)
@@ -837,7 +861,7 @@ def showgrid3():
                 activebackground = "grey"
 
             f = tk.Frame(mainframe,width=80,height=80)
-            text = gridvalue(x,y)
+            text = str(grid[x][y])
 #            text = grid[x][y]
 #            bg = butbg(x,y)
             state= "active"
@@ -848,6 +872,7 @@ def showgrid3():
                 fg = "black"
                 myfont = font.Font(size=30,weight="bold")
             b = tk.Button(f,text=text,state=state,fg=fg,font=myfont,bg=bg,activebackground=activebackground)
+            b["command"] = lambda ix = x , iy = y : tryout(ix,iy)
 #            b["text"] =  gridvalue(x,y)
 #            print(f"{b['text']}")
             f.rowconfigure(0,weight = 1)
@@ -856,12 +881,42 @@ def showgrid3():
 #            print(f"a = <{x}>, b = <{y}>")
             f.grid(row = x,column = y)
             b.grid(sticky = "NWSE")
+            b.bind("<Key>",key)
+            b.bind("<Button-1>", call)
+            b.focus_set()
+            s = x
+#            g = lambda ix = x , iy = y : clear(ix,iy) 
+            b.bind("<Button-3>", lambda *args , es = s, ey = y : clear(*args,es,ey))
 
-def gridvalue(x,y):
+def _quit():
+    raise SystemExit
+
+def clear(event,x,y):
     global grid
-#    print(f"x = {x}, y = {y}, value = {grid[x][y]}")
-    return str(grid[x][y])
+#    print(args)
+#    for arg in args:
+#        print(f"{arg}")
+#    return
+    change = False
+    print(f"{x}{y}")
+    if type(grid[x][y]) == int:
+        return
+    if selectednumber != None:
+        if str(selectednumber) in grid[x][y]:
+            if len(grid[x][y]) > 1:
+                grid[x][y] = grid[x][y].strip(str(selectednumber))
+                change = True
+    if change:
+        showgrid3()
 
+
+
+
+#def gridvalue(x,y):
+#    global grid
+##    print(f"x = {x}, y = {y}, value = {grid[x][y]}")
+#    return str(grid[x][y])
+#
 #def showgrid2():
 #    global grid
 #    for a in range(9):
@@ -897,6 +952,7 @@ def maintwo():
     while s != True:
         s = main()
 
+#        showgrid3()
 #    if main() == True:
 #    showgrid()
 #    showgrid2()
