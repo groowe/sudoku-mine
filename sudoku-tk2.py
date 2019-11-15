@@ -1042,7 +1042,7 @@ if __name__ == "__main__":
     gridbar.add_command(label="impos3",command=lambda * args: setgrid(impos3))
     gridbar.add_command(label="hardestinvalid",command=lambda * args: setgrid(hardestinvalid))
     gridbar.add_command(label="extremeinvalid",command=lambda * args: setgrid(extremeinvalid))
-    gridbar.add_command(label="emptygrid",command=lambda * args: setgrid(emptygrid))
+    gridbar.add_command(label="custom",command=lambda * args: setgrid(emptygrid))
     menuBar.add_cascade(label="set",menu=gridbar)
     
     fileMenu = Menu(menuBar,tearoff=0)
