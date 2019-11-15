@@ -594,7 +594,7 @@ def guessing(poss = None):
     if not poss:
         if len(gridlist) == 0:
             print("invalid puzzle")
-            quit()
+#            quit()
         value = gridlist[-1][1][3]
         while len(value) == 0:
             if len(gridlist) > 1:
@@ -835,13 +835,57 @@ def tryout(x,y):
     if change:
         cleanup(grid)
         showgrid3()
-def showgrid3():
+mf()
+def showgrid3(x= None, y = None):
+    
+    global grid
+    dark = ["01","10","12","21"]
+    if x != None and y != None:
+        f = tk.Frame(mainframe,width=80,height=80)
+        text = str(grid[x][y])
+        modx = int(x/3)
+        mody = int(y/3)
+        xy = str(modx)+str(mody)
+        if xy in dark:
+            bg = "light blue"
+            activebackground = "light blue"
+        else:
+            bg = "grey"
+            activebackground = "grey"
+
+
+        f = tk.Frame(mainframe,width=80,height=80)
+        text = str(grid[x][y])
+#        text = grid[x][y]
+#        bg = butbg(x,y)
+        state= "active"
+        fg = "black"
+        myfont = font.Font(size=10)
+        if type(grid[x][y]) == int:
+            state="disabled"
+            fg = "black"
+            myfont = font.Font(size=30,weight="bold")
+        b = tk.Button(f,text=text,state=state,fg=fg,font=myfont,bg=bg,activebackground=activebackground)
+        b["command"] = lambda ix = x , iy = y : tryout(ix,iy)
+#        b["text"] =  gridvalue(x,y)
+#        print(f"{b['text']}")
+        f.rowconfigure(0,weight = 1)
+        f.columnconfigure(0,weight = 1)
+        f.grid_propagate(0)
+#        print(f"a = <{x}>, b = <{y}>")
+        f.grid(row = x,column = y)
+        b.grid(sticky = "NWSE")
+        b.bind("<Key>",key)
+        b.bind("<Button-1>", call)
+        b.focus_set()
+        s = x
+#        g = lambda ix = x , iy = y : clear(ix,iy) 
+        b.bind("<Button-3>", lambda *args , es = s, ey = y : clear(*args,es,ey))
+        return
 #   00 01 02
 #   10 11 12
 #   20 21 22
-    s = mf()
-    dark = ["01","10","12","21"]
-    global grid
+#    s = mf()
     for x in range(9):
         modx = int(x/3)
         for y in range(9):
@@ -898,16 +942,18 @@ def clear(event,x,y):
 #        print(f"{arg}")
 #    return
     change = False
-    print(f"{x}{y}")
+    print(f"{x}{y} {grid[x][y]} {selectednumber}")
+    print(str(selectednumber) in grid[x][y])
     if type(grid[x][y]) == int:
         return
     if selectednumber != None:
-        if str(selectednumber) in grid[x][y]:
-            if len(grid[x][y]) > 1:
+        if str(selectednumber) in str(grid[x][y]):
+            if len(str(grid[x][y])) > 1:
                 grid[x][y] = grid[x][y].strip(str(selectednumber))
                 change = True
+                print(f"change = {change}")
     if change:
-        showgrid3()
+        showgrid3(x,y)
 
 
 
