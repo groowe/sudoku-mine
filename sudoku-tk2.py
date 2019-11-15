@@ -153,7 +153,7 @@ def cleanup(grid):
                                 grid[ix][iy] = grid[ix][iy].replace(num,"")
     return grid
 
-# clen print
+# clean print
 def preprint(line):
 #    s = []
 #    for item in line:
@@ -506,7 +506,7 @@ def sqr():
                             doit = setnum(grid[x][y],x,y)
                             if doit == True:
                                 progress = True
-                                square = []
+                                isquare = []
                                 for x in range(modx*3,(modx*3)+3):
                                     for y in range(mody*3,(mody*3)+3):
                                         square.append(grid[x][y])
@@ -1009,6 +1009,8 @@ def maintwo():
 
 def setgrid(st):
     global grid
+    global gridlist
+    gridlist = []
     grid = st()
 #    showgrid()
 #    showgrid2()
