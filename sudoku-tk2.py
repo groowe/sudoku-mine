@@ -839,7 +839,11 @@ mf()
 def showgrid3(x= None, y = None):
     
     global grid
+#   00 01 02
+#   10 11 12
+#   20 21 22
     dark = ["01","10","12","21"]
+
     if x != None and y != None:
         f = tk.Frame(mainframe,width=80,height=80)
         text = str(grid[x][y])
@@ -882,9 +886,7 @@ def showgrid3(x= None, y = None):
 #        g = lambda ix = x , iy = y : clear(ix,iy) 
         b.bind("<Button-3>", lambda *args , es = s, ey = y : clear(*args,es,ey))
         return
-#   00 01 02
-#   10 11 12
-#   20 21 22
+
 #    s = mf()
     for x in range(9):
         modx = int(x/3)
