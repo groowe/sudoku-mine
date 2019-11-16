@@ -135,6 +135,7 @@ def standardize(grid):
 # clean from impossible numbers
 def cleanup(grid,ingame=False):
     change = False
+    changes = []
     for x in range(9):
         for y in range(9):
             if type(grid[x][y]) == int:
@@ -154,9 +155,11 @@ def cleanup(grid,ingame=False):
                             if diff and (inrow or incul or insqr) and numing:
                                 grid[ix][iy] = grid[ix][iy].replace(num,"")
                                 change = True
-    if change:
-        showgrid3()
-
+                                changes.append([ix,iy])
+    if change and ingame:
+#        showgrid3()
+        for c in changes:
+            partgrid(c[0],c[1],new=False)
 #                                if ingame:
 #                                    showgrid3(ix,iy)
     return grid
@@ -751,11 +754,13 @@ def key(event):
         if 0 < int(event.char) < 10:
             selectednumber = int(event.char)
     except:
+        print(f"selectednumber = {selectednumber}")
+        print(f"{event.char}")
         return
     print(selectednumber)
 
 def callback(event):
-    mainframe.focus_set()
+#    mainframe.focus_set()
 #    print(f"{x}{y}")
     print("clicked at",event.x, event.y)
 
@@ -776,73 +781,95 @@ def tryout(x,y):
     print(f"{x}{y} = {grid[x][y]}")
     change = False
     if selectednumber != None:
+        if type(grid[x][y]) == int:
+            return
 
         if str(selectednumber) in grid[x][y]:
             grid[x][y] = selectednumber
             change = True
     if change:
         grid = cleanup(grid,True)
+        partgrid(x,y)
 #        showgrid3()
 mf()
 
 
-def showgrid3(x= None, y = None):
-    
+def showgrid3(x= None, y = None,new = False):
+    global butgrid    
     global grid
+#    s = mf()
+    for x in range(9):
+        for y in range(9):
+            partgrid(x,y,new)
+
+#            g = lambda sx = x , iy = y : clear(sx,iy) 
+def partgrid(x,y,new=False):
+    global grid
+    global butgrid
 #   00 01 02
 #   10 11 12
 #   20 21 22
+    print(f"partgrid {x}{y}")
     dark = ["01","10","12","21"]
-#    s = mf()
-    for x in range(9):
-        modx = int(x/3)
-        for y in range(9):
+    modx = int(x/3)
+    mody = int(y/3)
+    xy = str(modx)+str(mody)
 
-#            g = lambda sx = x , iy = y : clear(sx,iy) 
-            mody = int(y/3)
+    if xy in dark:
+#        bg="dark green"
+        bg = "light blue"
+            
+        activebackground= "light blue"
+    else:
+#        bg="green"
+        bg = "grey"
+        activebackground = "grey"
+##### TO BE IMPLEMENTED .. but probably in a different way ###########
+#    if str(selectednumber) in str(grid[x][y]):
+#        bg = "light grey"
+#        activebackground = "light grey"
+######################################################################
+    text = str(grid[x][y])
+#    text = grid[x][y]
+#    bg = butbg(x,y)
+    state= "active"
+    fg = "black"
+    myfont = font.Font(size=10)
+    if type(grid[x][y]) == int:
+        state="disabled"
+        fg = "black"
+        myfont = font.Font(size=30,weight="bold")
+    if new or butgrid[x][y] == None:
 
-            xy = str(modx)+str(mody)
-            if xy in dark:
-#                bg="dark green"
-                bg = "light blue"
-                    
-                activebackground= "light blue"
-            else:
-#                bg="green"
-                bg = "grey"
-                activebackground = "grey"
-############# TO BE IMPLEMENTED .. but probably in a different way ###########
-#            if str(selectednumber) in str(grid[x][y]):
-#                bg = "light grey"
-#                activebackground = "light grey"
+        f = tk.Frame(mainframe,width=80,height=80)
 
-            f = tk.Frame(mainframe,width=80,height=80)
-            text = str(grid[x][y])
-#            text = grid[x][y]
-#            bg = butbg(x,y)
-            state= "active"
-            fg = "black"
-            myfont = font.Font(size=10)
-            if type(grid[x][y]) == int:
-                state="disabled"
-                fg = "black"
-                myfont = font.Font(size=30,weight="bold")
-            b = tk.Button(f,text=text,state=state,fg=fg,font=myfont,bg=bg,activebackground=activebackground)
-            b["command"] = lambda ix = x , iy = y : tryout(ix,iy)
-#            b["text"] =  gridvalue(x,y)
-#            print(f"{b['text']}")
-            f.rowconfigure(0,weight = 1)
-            f.columnconfigure(0,weight = 1)
-            f.grid_propagate(0)
-#            print(f"a = <{x}>, b = <{y}>")
-            f.grid(row = x,column = y)
-            b.grid(sticky = "NWSE")
-            b.bind("<Key>",key)
-            b.bind("<Button-1>", call)
-            b.focus_set()
-            s = x
-#            g = lambda ix = x , iy = y : clear(ix,iy) 
-            b.bind("<Button-3>", lambda *args , es = s, ey = y : clear(*args,es,ey))
+        f.rowconfigure(0,weight = 1)
+        f.columnconfigure(0,weight = 1)
+        f.grid_propagate(0)
+        b = tk.Button(f,text=text,state=state,fg=fg,
+                font=myfont,bg=bg,activebackground=activebackground)
+    else:
+        f,b = butgrid[x][y]
+        b.destroy()
+        b = tk.Button(f,text=text,state=state,fg=fg,
+                font=myfont,bg=bg,activebackground=activebackground)
+
+
+#    b["command"] = lambda ix = x , iy = y : tryout(ix,iy)
+#     b["text"] =  gridvalue(x,y)
+#    print(f"{b['text']}")
+
+#    print(f"a = <{x}>, b = <{y}>")
+    f.grid(row = x,column = y)
+    b.grid(sticky = "NWSE")
+    b.bind("<Key>",key)
+    b.bind("<Button-1>", lambda *args, ix=x, iy = y : tryout(ix,iy))
+    b.focus_set()
+    s = x
+#      g = lambda ix = x , iy = y : clear(ix,iy) 
+
+    b.bind("<Button-3>", lambda *args , es = s, ey = y : clear(*args,es,ey))
+    butgrid[x][y] = f,b
 
 def _quit():
     raise SystemExit
@@ -861,10 +888,7 @@ def clear(event,x,y):
                 change = True
                 print(f"change = {change}")
     if change:
-        showgrid3(x,y)
-
-
-
+        partgrid(x,y)
 
 
 
@@ -873,7 +897,7 @@ def maintwo():
     while s != True:
         s = main()
 
-    showgrid3()
+    showgrid3(new=True)
 
 
 def setgrid(st):
@@ -882,7 +906,7 @@ def setgrid(st):
     global guessed
     guessed = 0
     gridlist = []
-
+    butgrid = [[None for i in range(9)] for i in range(9)]
     grid = st()
 #    showgrid()
 #    showgrid2()
@@ -897,6 +921,7 @@ if __name__ == "__main__":
     menuBar = Menu(win)
     win.config(menu=menuBar)
     
+    butgrid = [[None for i in range(9)] for i in range(9)]
     #gridbar = Menu(win)
     #win.config(menu=gridbar)
     
