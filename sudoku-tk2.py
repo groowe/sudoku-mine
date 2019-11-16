@@ -905,6 +905,10 @@ def showgrid3(x= None, y = None):
 #                bg="green"
                 bg = "grey"
                 activebackground = "grey"
+############# TO BE IMPLEMENTED .. but probably in a different way ###########
+#            if str(selectednumber) in str(grid[x][y]):
+#                bg = "light grey"
+#                activebackground = "light grey"
 
             f = tk.Frame(mainframe,width=80,height=80)
             text = str(grid[x][y])
