@@ -745,14 +745,55 @@ win = tk.Tk()
 
 win.title("Sudoku")
 selectednumber = None
+oldnumber = None
+
+def highlight():
+    global butgrid
+    if selectednumber == None or selectednumber == oldnumber:
+        return
+    coords = []
+    olds = []
+    print(selectednumber,oldnumber)
+    for x in range(9):
+        for y in range(9):
+            new = str(selectednumber) in str(grid[x][y])
+            old = False
+            if oldnumber != None:
+
+                old = str(oldnumber) in str(grid[x][y])
+            if new:
+                coords.append([x,y])
+            if old:
+                olds.append([x,y])
+    print(coords,old)
+    for i in range(len(coords)):
+#        d = butgrid(cor[0],cor[1][1])
+#        d["bg"] = "grey"
+#        d["activebackground"] = "grey"
+        x = coords[i][0]
+        y = coords[i][1]
+        print(x,y)
+        partgrid(x,y)
+    for o in range(len(olds)):
+        x = olds[o][0]
+        y = olds[o][1]
+        print(x,y)
+        partgrid(x,y)
+
 
 def key(event):
     try:
 
         global selectednumber
+        global oldnumber
+
         print("pressed", repr(event.char))
         if 0 < int(event.char) < 10:
             selectednumber = int(event.char)
+            if oldnumber != selectednumber:
+                highlight()
+
+                oldnumber = selectednumber
     except:
         print(f"selectednumber = {selectednumber}")
         print(f"{event.char}")
@@ -790,6 +831,7 @@ def tryout(x,y):
     if change:
         grid = cleanup(grid,True)
         partgrid(x,y)
+        highlight()
 #        showgrid3()
 mf()
 
@@ -825,20 +867,23 @@ def partgrid(x,y,new=False):
         bg = "grey"
         activebackground = "grey"
 ##### TO BE IMPLEMENTED .. but probably in a different way ###########
-#    if str(selectednumber) in str(grid[x][y]):
-#        bg = "light grey"
-#        activebackground = "light grey"
+    
+    if str(selectednumber) in str(grid[x][y]):
+        bg = "light grey"
+        activebackground = "light grey"
 ######################################################################
     text = str(grid[x][y])
 #    text = grid[x][y]
 #    bg = butbg(x,y)
     state= "active"
     fg = "black"
-    myfont = font.Font(size=10)
+    smallfont = font.Font(size=10)
+    bigfont = font.Font(size=30,weight="bold")
+    myfont = smallfont
     if type(grid[x][y]) == int:
         state="disabled"
         fg = "black"
-        myfont = font.Font(size=30,weight="bold")
+        myfont = bigfont
     if new or butgrid[x][y] == None:
 
         f = tk.Frame(mainframe,width=80,height=80)
@@ -847,12 +892,32 @@ def partgrid(x,y,new=False):
         f.columnconfigure(0,weight = 1)
         f.grid_propagate(0)
         b = tk.Button(f,text=text,state=state,fg=fg,
-                font=myfont,bg=bg,activebackground=activebackground)
+                bg=bg,activebackground=activebackground)
+        if type(grid[x][y]) == int:
+            b["font"] = bigfont
+        else:
+            b["font"] = smallfont
     else:
         f,b = butgrid[x][y]
-        b.destroy()
-        b = tk.Button(f,text=text,state=state,fg=fg,
-                font=myfont,bg=bg,activebackground=activebackground)
+        if b["text"] != str(grid[x][y]):
+            b["text"] = str(grid[x][y])
+        if type(grid[x][y]) == int:
+            b["font"] = bigfont
+            b["state"] = "disabled"
+
+        else:
+            print("")
+        if str(selectednumber) in str(grid[x][y]):
+            b["bg"] = b["activebackground"] = "light grey"
+        else:
+            b["bg"] = b["activebackground"] = bg
+
+        return
+
+
+#        b.destroy()
+#        b = tk.Button(f,text=text,state=state,fg=fg,
+#                font=myfont,bg=bg,activebackground=activebackground)
 
 
 #    b["command"] = lambda ix = x , iy = y : tryout(ix,iy)
@@ -910,10 +975,11 @@ def setgrid(st):
     grid = st()
 #    showgrid()
 #    showgrid2()
-    showgrid3()
+    showgrid3(new=True)
     printgrid()
     print(st)
     print(grid)
+#    input()
 
 if __name__ == "__main__":
 #    showgrid()
