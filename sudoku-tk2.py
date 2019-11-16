@@ -133,7 +133,8 @@ def standardize(grid):
     return cleanup(grid)
 
 # clean from impossible numbers
-def cleanup(grid):
+def cleanup(grid,ingame=False):
+    change = False
     for x in range(9):
         for y in range(9):
             if type(grid[x][y]) == int:
@@ -147,10 +148,17 @@ def cleanup(grid):
                             modiy = int(iy/3)
                             inrow = (x == ix)
                             incul = (y == iy)
+                            numing = (num in grid[ix][iy])
                             diff = not (inrow and incul)
                             insqr = ((modx == modix) and (mody == modiy))
-                            if diff and (inrow or incul or insqr):
+                            if diff and (inrow or incul or insqr) and numing:
                                 grid[ix][iy] = grid[ix][iy].replace(num,"")
+                                change = True
+    if change:
+        showgrid3()
+
+#                                if ingame:
+#                                    showgrid3(ix,iy)
     return grid
 
 # clean print
@@ -724,7 +732,9 @@ grid = emptygrid()
 gridlist = []
 guessed = 0
 
-#### GUI PART #######
+#############################################
+  ################ GUI PART ###############
+#############################################
 import tkinter as tk
 from tkinter import ttk , Menu
 import tkinter.font as font
@@ -754,73 +764,11 @@ def call(event):
     callback(event)
 def mf():
     global mainframe
-    try:
-        mainframe.destroy()
-    except:
-        print()
         
     mainframe = tk.Frame(win,width=800,height=800)
-    mainframe.bind("<Key>",key)
-    mainframe.bind("<Button-1>",callback)
     mainframe.pack()
     return True
 
-
-#"""
-#s1 = tk.Button(win,text="1",width=3,height=3,command= lambda *args : globalv(1))
-#s1.grid( column="1",row=3)
-#s2 = tk.Button(win,text="2",width=3,height=3,command= lambda *args : globalv(2))
-#s2.grid(column="2",row=3)
-#s3 = tk.Button(win,text="3",width=3,height=3,command= lambda *args : globalv(3))
-#s3.grid(column="3",row=3)
-#s4 = tk.Button(win,text="4",width=3,height=3,command= lambda *args : globalv(4))
-#s4.grid(column="5",row=3)
-#s5 = tk.Button(win,text="5",width=3,height=3,command= lambda *args : globalv(5))
-#s5.grid(column="6",row=3)
-#s6 = tk.Button(win,text="6",width=3,height=3,command= lambda *args : globalv(6))
-#s6.grid(column="7",row=3)
-#s7 = tk.Button(win,text="7",width=3,height=3,command= lambda *args : globalv(7))
-#s7.grid(column="9",row=3)
-#s8 = tk.Button(win,text="8",width=3,height=3,command= lambda *args : globalv(8))
-#s8.grid(column="10",row=3)
-#s9 = tk.Button(win,text="9",width=3,height=3,command= lambda *args : globalv(9))
-#s9.grid(column="11",row=3)
-#"""
-
-
-#def showgrid():
-#    global grid
-#    for a in range(9):
-#        for b in range(9):
-#            x = str(a)+str(b)
-#            if type(grid[a][b]) == int:
-#                text = str(grid[a][b])
-##                size = 30
-##                weight = "bold"
-##                helv36 = font.Font(family='Helvetica', size=15)
-#
-#            else:
-#                text = grid[a][b]
-##                size = 10
-##                weight = "italic"
-##    
-##                helv36 = font.Font(family='Helvetica', size=10)
-##                text = str(grid[a][b])
-#
-#            x = tk.Button(win,text=text,width=3,height=3)
-#            c = b
-#            if b > 2:
-#                c+=1
-#                if b > 5:
-#                    c+=1
-#            d = a
-#            if a > 2:
-#                d+=1
-#                if a > 5:
-#                    d+=1
-#
-# 
-#            x.grid(column=str(c+1),row=str(d+5))
 
 
 def tryout(x,y):
@@ -833,9 +781,11 @@ def tryout(x,y):
             grid[x][y] = selectednumber
             change = True
     if change:
-        cleanup(grid)
-        showgrid3()
+        grid = cleanup(grid,True)
+#        showgrid3()
 mf()
+
+
 def showgrid3(x= None, y = None):
     
     global grid
@@ -843,50 +793,6 @@ def showgrid3(x= None, y = None):
 #   10 11 12
 #   20 21 22
     dark = ["01","10","12","21"]
-
-    if x != None and y != None:
-        f = tk.Frame(mainframe,width=80,height=80)
-        text = str(grid[x][y])
-        modx = int(x/3)
-        mody = int(y/3)
-        xy = str(modx)+str(mody)
-        if xy in dark:
-            bg = "light blue"
-            activebackground = "light blue"
-        else:
-            bg = "grey"
-            activebackground = "grey"
-
-
-        f = tk.Frame(mainframe,width=80,height=80)
-        text = str(grid[x][y])
-#        text = grid[x][y]
-#        bg = butbg(x,y)
-        state= "active"
-        fg = "black"
-        myfont = font.Font(size=10)
-        if type(grid[x][y]) == int:
-            state="disabled"
-            fg = "black"
-            myfont = font.Font(size=30,weight="bold")
-        b = tk.Button(f,text=text,state=state,fg=fg,font=myfont,bg=bg,activebackground=activebackground)
-        b["command"] = lambda ix = x , iy = y : tryout(ix,iy)
-#        b["text"] =  gridvalue(x,y)
-#        print(f"{b['text']}")
-        f.rowconfigure(0,weight = 1)
-        f.columnconfigure(0,weight = 1)
-        f.grid_propagate(0)
-#        print(f"a = <{x}>, b = <{y}>")
-        f.grid(row = x,column = y)
-        b.grid(sticky = "NWSE")
-        b.bind("<Key>",key)
-        b.bind("<Button-1>", call)
-        b.focus_set()
-        s = x
-#        g = lambda ix = x , iy = y : clear(ix,iy) 
-        b.bind("<Button-3>", lambda *args , es = s, ey = y : clear(*args,es,ey))
-        return
-
 #    s = mf()
     for x in range(9):
         modx = int(x/3)
@@ -943,10 +849,6 @@ def _quit():
 
 def clear(event,x,y):
     global grid
-#    print(args)
-#    for arg in args:
-#        print(f"{arg}")
-#    return
     change = False
     print(f"{x}{y} {grid[x][y]} {selectednumber}")
     print(str(selectednumber) in grid[x][y])
@@ -955,45 +857,12 @@ def clear(event,x,y):
     if selectednumber != None:
         if str(selectednumber) in str(grid[x][y]):
             if len(str(grid[x][y])) > 1:
-                grid[x][y] = grid[x][y].strip(str(selectednumber))
+                grid[x][y] = grid[x][y].replace(str(selectednumber),"")
                 change = True
                 print(f"change = {change}")
     if change:
         showgrid3(x,y)
 
-
-
-
-#def gridvalue(x,y):
-#    global grid
-##    print(f"x = {x}, y = {y}, value = {grid[x][y]}")
-#    return str(grid[x][y])
-#
-#def showgrid2():
-#    global grid
-#    for a in range(9):
-#        for b in range(9):
-#            s = str(a)+str(b)
-#
-#            bd = 2
-#            bg = "grey"
-#            isnum = ( grid[a][b] == selectednumber)
-#            hasnum = (str(selectednumber) in str(grid[a][b]))
-#            if isnum:
-#                bd = 5
-#
-#            if isnum or hasnum:
-#
-#                bg = "darkgrey"
-#            s = tk.Button(mainframe,text=str(grid[a][b]),
-#                    #width=100,height=100,
-#                    bd=bd,bg=bg)
-#            s.grid(row=a,column=b)#,sticky="nesw")
-#            frame = tk.Frame(mainframe,width=100,height=100,bd=bd,bg=bg)
-#            frame.grid(row=a,column=b)
-#            s = tk.Button(frame,text=str(grid[a][b]))
-#            s.pack()
-#            frame.pack()
 
 
 
@@ -1004,17 +873,16 @@ def maintwo():
     while s != True:
         s = main()
 
-#        showgrid3()
-#    if main() == True:
-#    showgrid()
-#    showgrid2()
     showgrid3()
 
 
 def setgrid(st):
     global grid
     global gridlist
+    global guessed
+    guessed = 0
     gridlist = []
+
     grid = st()
 #    showgrid()
 #    showgrid2()
@@ -1054,25 +922,5 @@ if __name__ == "__main__":
     fileMenu.add_command(labe="solve",command=maintwo)
     menuBar.add_cascade(label="File",menu=fileMenu)
     
-    #gridlist = []
-    #guessed = 0
     win.mainloop()
 
-#    grid = easy()
-#    grid = medium()
-#    grid = hard()
-#    grid = extreme()
-#    grid = hardest()
-#    grid = impos1()
-#    grid = impos2()
-#    grid = impos3()
-#    grid = hardest2()
-#    grid = newgrid()
-#    printgrid(False)
-#    grid = hardestinvalid()
-#    grid = extremeinvalid()
-#    grid = emptygrid()
-#    gridlist = []
-#    solve_by_guess()
-#    guessed = 0
-#    main()
