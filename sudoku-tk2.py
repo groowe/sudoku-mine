@@ -606,7 +606,13 @@ def guessing(poss = None):
         if len(gridlist) == 0:
             print("invalid puzzle")
 #            quit()
-        value = gridlist[-1][1][3]
+        try:
+            value = gridlist[-1][1][3]
+        except IndexError:
+            tk.messagebox.askokcancel('popup','invalid puzzle!')
+            hardest()
+            return False
+
         while len(value) == 0:
             if len(gridlist) > 1:
                 x1 = gridlist[-1][-1][0]
@@ -617,7 +623,12 @@ def guessing(poss = None):
                     invalid = str(gridlist[-1][1][2])
                     gridlist[-2][-1][3] = gridlist[-2][-1][3].replace(invalid,"")
             gridlist = gridlist[:-1]
-            value = gridlist[-1][1][3]
+            try:
+                value = gridlist[-1][1][3]
+            except IndexError:
+                tk.messagebox.askokcancel('popup','invalid puzzle!')
+                hardest()
+                return False
             print("value = {value}")
         grid = copygrid(gridlist[-1][0])
         cell = gridlist[-1][1]
@@ -655,7 +666,10 @@ def main():
             printgrid()
             guessed +=1
             printgrid(False)
-            guessing(possible())
+            if guessing(possible()) == False:
+                completed,valid= True,True
+#                hardest()
+
 
             showguesses()
             print(len(gridlist))
@@ -741,6 +755,7 @@ guessed = 0
 import tkinter as tk
 from tkinter import ttk , Menu
 import tkinter.font as font
+from tkinter.messagebox import showinfo
 win = tk.Tk()
 
 win.title("Sudoku")
