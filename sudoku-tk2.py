@@ -750,11 +750,11 @@ win.title("Sudoku")
 selectednumber = None
 oldnumber = None
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
+##<<<<<<< HEAD
+#
+#
+##=======
+##>>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
 def highlight():
     global butgrid
     if selectednumber == None or selectednumber == oldnumber:
@@ -795,11 +795,11 @@ def key(event):
         global selectednumber
         global oldnumber
 
-<<<<<<< HEAD
+#<<<<<<< HEAD
 #        print("pressed", repr(event.char))
-=======
+#=======
         print("pressed", repr(event.char))
->>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
+#>>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
         if 0 < int(event.char) < 10:
             selectednumber = int(event.char)
             if oldnumber != selectednumber:
@@ -906,18 +906,18 @@ def partgrid(x,y,new=False):
 #        bg="green"
         bg = "grey"
         activebackground = "grey"
-<<<<<<< HEAD
-=======
+#<<<<<<< HEAD
+#=======
 ##### TO BE IMPLEMENTED .. but probably in a different way ###########
->>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
+#>>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
     
     if str(selectednumber) in str(grid[x][y]):
         bg = "light grey"
         activebackground = "light grey"
-<<<<<<< HEAD
-=======
+#<<<<<<< HEAD
+#=======
 ######################################################################
->>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
+#>>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
     text = str(grid[x][y])
 #    text = grid[x][y]
 #    bg = butbg(x,y)
@@ -954,12 +954,12 @@ def partgrid(x,y,new=False):
         else:
             print("")
         if str(selectednumber) in str(grid[x][y]):
-<<<<<<< HEAD
+#<<<<<<< HEAD
             if type(grid[x][y]) != int:
                 b["bg"] = b["activebackground"] = "light grey"
-=======
+#=======
             b["bg"] = b["activebackground"] = "light grey"
->>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
+#>>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
         else:
             b["bg"] = b["activebackground"] = bg
 
