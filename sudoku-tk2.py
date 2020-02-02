@@ -40,7 +40,7 @@ def easy():
     grid[7] = [8,6,0,9,3,4,1,0,2]
     grid[8] = [7,0,3,0,5,1,0,8,0]
     grid = standardize(grid)
-    print("whoooo")
+#    print("whoooo")
     return grid
 
 def medium():
@@ -362,9 +362,9 @@ def solve_by_guess():
  #          # print(type(y))
  #          # print(type(value))
             grid[x][y] = value
-            print(x,y,value)
-            print(grid[x][y])
-            printgrid()
+#            print(x,y,value)
+#            print(grid[x][y])
+#            printgrid()
 #        input()
 #        printgrid(False)
        # input()
@@ -600,8 +600,8 @@ def guessing(poss = None):
     global gridlist
     if poss == None:
         poss = possible()
-    print(f"poss = {poss}")
-    print(f"len gridlist = {len(gridlist)}")
+#    print(f"poss = {poss}")
+#    print(f"len gridlist = {len(gridlist)}")
     if not poss:
         if len(gridlist) == 0:
             print("invalid puzzle")
@@ -744,8 +744,13 @@ import tkinter.font as font
 win = tk.Tk()
 
 win.title("Sudoku")
+#win.rowconfigure(1)
+#win.columnconfigure(2)
+
 selectednumber = None
 oldnumber = None
+
+
 
 def highlight():
     global butgrid
@@ -787,7 +792,7 @@ def key(event):
         global selectednumber
         global oldnumber
 
-        print("pressed", repr(event.char))
+#        print("pressed", repr(event.char))
         if 0 < int(event.char) < 10:
             selectednumber = int(event.char)
             if oldnumber != selectednumber:
@@ -795,8 +800,8 @@ def key(event):
 
                 oldnumber = selectednumber
     except:
-        print(f"selectednumber = {selectednumber}")
-        print(f"{event.char}")
+#        print(f"selectednumber = {selectednumber}")
+#        print(f"{event.char}")
         return
     print(selectednumber)
 
@@ -810,16 +815,44 @@ def call(event):
     callback(event)
 def mf():
     global mainframe
+    global botbut
+    global wf
         
-    mainframe = tk.Frame(win,width=800,height=800)
+    wf = tk.Frame(win,width = 800 ,height = 900)
+    wf.pack()
+    mainframe = tk.Frame(wf,width=800,height=800)#.grid(row=0,column=0)
     mainframe.pack()
+    botbut = tk.Frame(wf,width=800,height=100)#.grid(row=0,column=1)
+    
+#    leftbut.grid(row=0,column=1)
+    botbut.pack()
     return True
 
+def recount():
+    rcount = [None,0,0,0,0,0,0,0,0,0]
+    for x in range(9):
+        for y in range(9):
+            if type(grid[x][y]) == int:
+                rcount[grid[x][y]]+=1
 
+    return rcount
+
+def printnum():
+    global botbut
+#    global 
+    counts = recount()
+    for x in range(1,10):
+        count = counts[x]
+        num = x
+
+
+
+#def leftbut():
+    
 
 def tryout(x,y):
     global grid
-    print(f"{x}{y} = {grid[x][y]}")
+#    print(f"{x}{y} = {grid[x][y]}")
     change = False
     if selectednumber != None:
         if type(grid[x][y]) == int:
@@ -851,7 +884,7 @@ def partgrid(x,y,new=False):
 #   00 01 02
 #   10 11 12
 #   20 21 22
-    print(f"partgrid {x}{y}")
+#    print(f"partgrid {x}{y}")
     dark = ["01","10","12","21"]
     modx = int(x/3)
     mody = int(y/3)
@@ -866,12 +899,10 @@ def partgrid(x,y,new=False):
 #        bg="green"
         bg = "grey"
         activebackground = "grey"
-##### TO BE IMPLEMENTED .. but probably in a different way ###########
     
     if str(selectednumber) in str(grid[x][y]):
         bg = "light grey"
         activebackground = "light grey"
-######################################################################
     text = str(grid[x][y])
 #    text = grid[x][y]
 #    bg = butbg(x,y)
@@ -908,7 +939,8 @@ def partgrid(x,y,new=False):
         else:
             print("")
         if str(selectednumber) in str(grid[x][y]):
-            b["bg"] = b["activebackground"] = "light grey"
+            if type(grid[x][y]) != int:
+                b["bg"] = b["activebackground"] = "light grey"
         else:
             b["bg"] = b["activebackground"] = bg
 
@@ -942,7 +974,7 @@ def _quit():
 def clear(event,x,y):
     global grid
     change = False
-    print(f"{x}{y} {grid[x][y]} {selectednumber}")
+#    print(f"{x}{y} {grid[x][y]} {selectednumber}")
     print(str(selectednumber) in grid[x][y])
     if type(grid[x][y]) == int:
         return
@@ -951,7 +983,7 @@ def clear(event,x,y):
             if len(str(grid[x][y])) > 1:
                 grid[x][y] = grid[x][y].replace(str(selectednumber),"")
                 change = True
-                print(f"change = {change}")
+#                print(f"change = {change}")
     if change:
         partgrid(x,y)
 
@@ -965,7 +997,7 @@ def maintwo():
     showgrid3(new=True)
 
 
-def setgrid(st):
+def setgrid(st,name = ""):
     global grid
     global gridlist
     global guessed
@@ -977,6 +1009,8 @@ def setgrid(st):
 #    showgrid2()
     showgrid3(new=True)
     printgrid()
+    tt = "Sudoku "+name
+    win.title(tt)
     print(st)
     print(grid)
 #    input()
@@ -994,18 +1028,18 @@ if __name__ == "__main__":
     gridbar = Menu(menuBar,tearoff=0)
     #win.config(menu=gridbar)
 
-    gridbar.add_command(label="easy",command=lambda * args: setgrid(easy))
-    gridbar.add_command(label="medium",command=lambda * args: setgrid(medium))
-    gridbar.add_command(label="hard",command=lambda * args: setgrid(hard))
-    gridbar.add_command(label="extreme",command=lambda * args: setgrid(extreme))
-    gridbar.add_command(label="hardest",command=lambda * args: setgrid(hardest))
-    gridbar.add_command(label="hardest2",command=lambda * args: setgrid(hardest2))
-    gridbar.add_command(label="impos1",command=lambda * args: setgrid(impos1))
-    gridbar.add_command(label="impos2",command=lambda * args: setgrid(impos2))
-    gridbar.add_command(label="impos3",command=lambda * args: setgrid(impos3))
-    gridbar.add_command(label="hardestinvalid",command=lambda * args: setgrid(hardestinvalid))
-    gridbar.add_command(label="extremeinvalid",command=lambda * args: setgrid(extremeinvalid))
-    gridbar.add_command(label="custom",command=lambda * args: setgrid(emptygrid))
+    gridbar.add_command(label="easy",command=lambda * args: setgrid(easy,"easy"))
+    gridbar.add_command(label="medium",command=lambda * args: setgrid(medium,"medium"))
+    gridbar.add_command(label="hard",command=lambda * args: setgrid(hard,"hard"))
+    gridbar.add_command(label="extreme",command=lambda * args: setgrid(extreme,"extreme"))
+    gridbar.add_command(label="hardest",command=lambda * args: setgrid(hardest,"hardest"))
+    gridbar.add_command(label="hardest2",command=lambda * args: setgrid(hardest2,"hardest2"))
+    gridbar.add_command(label="impos1",command=lambda * args: setgrid(impos1,"impos1"))
+    gridbar.add_command(label="impos2",command=lambda * args: setgrid(impos2,"impos2"))
+    gridbar.add_command(label="impos3",command=lambda * args: setgrid(impos3,"impos3"))
+    gridbar.add_command(label="hardestinvalid",command=lambda * args: setgrid(hardestinvalid,"hardestinvalid"))
+    gridbar.add_command(label="extremeinvalid",command=lambda * args: setgrid(extremeinvalid,"extremeinvalid"))
+    gridbar.add_command(label="custom",command=lambda * args: setgrid(emptygrid,"custom"))
     menuBar.add_cascade(label="set",menu=gridbar)
     
     fileMenu = Menu(menuBar,tearoff=0)

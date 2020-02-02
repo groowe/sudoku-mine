@@ -45,11 +45,9 @@ def generate(l):
     skip = 0
     while bckp == grid:
         skipped = 0
-
         for x in range(len(grid)):
             for y in range(len(grid[x])):
                 if type(grid[x][y]) == str:
-
                     if str(num) in grid[x][y]:
                         if skip == skipped:
                             grid[x][y] = num
@@ -70,7 +68,6 @@ def generate(l):
 
     return l
 
-
 def done():
     print("done")
     for x in range(len(grid)):
@@ -78,7 +75,6 @@ def done():
             if type(grid[x][y]) != int:
                 return False
     return True
-
 
 def main():
     print("main")
@@ -89,7 +85,6 @@ def main():
         print(nums)
         showgrid()
         input()
-
 
 if __name__ == "__main__":
     grid = [["123456789" for i in range(9)] for i in range(9)]
