@@ -28,6 +28,40 @@
 
 
 #define grid
+
+fn = 'sudoku17'
+fullsdks = []
+def sudoku17():
+    import random
+    global fullsdks
+    if not fullsdks:
+        with open(fn,'r') as f:
+            sdks = f.readlines()
+        for s in range(len(sdks)):
+            sdks[s] = sdks[s].replace('\n','')
+        fullsdks = [[] for i in sdks]
+        for i in range(len(fullsdks)):
+        #    while len(fullsdks[i]) < 10:
+        #        fullsdks[i].append([])
+             start = 0
+             end = 9
+             while end <= len(sdks[i]):
+        
+                 fullsdks[i].append([])
+                 fullsdks[i][-1] = sdks[i][start:end]
+                 start=end
+                 end+=9
+
+    ran = random.randint(0,len(fullsdks))
+    return standardize(fullsdks[ran])
+
+    
+    for s in range(len(fullsdks)):
+        print(fullsdks[s])
+        print(sdks[s])
+        print(standardize(fullsdks[s]))
+
+
 def easy():
     grid = basicgrid()
     grid[0] = [0,3,0,8,1,0,7,0,6]
@@ -126,11 +160,18 @@ def basicgrid():
     return [[None for i in range(9)] for i in range(9)]
 
 def standardize(grid):
-    for x in range(9):
-        for y in range(9):
-            if grid[x][y] == 0 or grid[x][y] == None:
-                grid[x][y] = "123456789"
-    return cleanup(grid)
+    gg = []
+    for x in range(len(grid)):
+        gg.append([])
+        for y in range(len(grid[x])):
+            gg[x].append([])
+            if grid[x][y] == None or grid[x][y] == 0 or grid[x][y] == '0':
+#                grid[x][y] == "123456789"
+                gg[x][y] = '123456789'
+            else:
+                gg[x][y] = int(grid[x][y])
+    return cleanup(gg)
+
 
 # clean from impossible numbers
 def cleanup(grid,ingame=False):
@@ -929,6 +970,12 @@ def partgrid(x,y,new=False):
     if str(selectednumber) in str(grid[x][y]):
         bg = "light grey"
         activebackground = "light grey"
+        if len(str(grid[x][y])) == 1:
+#            activebackground = 'FFD700'
+#            bg = '#FFD700'
+            activebackground = 'grey'
+#            activebackground = '#FFD700'
+            bg = 'grey'
 #<<<<<<< HEAD
 #=======
 ######################################################################
@@ -946,9 +993,7 @@ def partgrid(x,y,new=False):
         fg = "black"
         myfont = bigfont
     if new or butgrid[x][y] == None:
-
         f = tk.Frame(mainframe,width=80,height=80)
-
         f.rowconfigure(0,weight = 1)
         f.columnconfigure(0,weight = 1)
         f.grid_propagate(0)
@@ -971,9 +1016,13 @@ def partgrid(x,y,new=False):
         if str(selectednumber) in str(grid[x][y]):
 #<<<<<<< HEAD
             if type(grid[x][y]) != int:
-                b["bg"] = b["activebackground"] = "light grey"
+#                b["bg"] = b["activebackground"] = "light grey"
+
+                b["bg"] = b["activebackground"] = "#B29700"
 #=======
-            b["bg"] = b["activebackground"] = "light grey"
+#            b["bg"] = b["activebackground"] = "light grey"
+            else:
+                b["bg"] = b["activebackground"] = '#CD853F'
 #>>>>>>> 909998e13b9b51e99c0b210a573be1582385e87a
         else:
             b["bg"] = b["activebackground"] = bg
@@ -1071,6 +1120,7 @@ if __name__ == "__main__":
     gridbar.add_command(label="impos1",command=lambda * args: setgrid(impos1,"impos1"))
     gridbar.add_command(label="impos2",command=lambda * args: setgrid(impos2,"impos2"))
     gridbar.add_command(label="impos3",command=lambda * args: setgrid(impos3,"impos3"))
+    gridbar.add_command(label="sudoku17",command=lambda * args: setgrid(sudoku17,"sudoku17"))
     gridbar.add_command(label="hardestinvalid",command=lambda * args: setgrid(hardestinvalid,"hardestinvalid"))
     gridbar.add_command(label="extremeinvalid",command=lambda * args: setgrid(extremeinvalid,"extremeinvalid"))
     gridbar.add_command(label="custom",command=lambda * args: setgrid(emptygrid,"custom"))
