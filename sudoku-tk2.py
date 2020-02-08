@@ -29,14 +29,32 @@
 
 #define grid
 
-fn = 'sudoku17'
 fullsdks = []
 def sudoku17():
     import random
     global fullsdks
     if not fullsdks:
-        with open(fn,'r') as f:
-            sdks = f.readlines()
+        # this is link from
+        # http://staffhome.ecm.uwa.edu.au/~00013890/sudokumin.php
+        url = 'http://staffhome.ecm.uwa.edu.au/~00013890/sudoku17'
+        fn = 'sudoku17'
+        try:
+            with open(fn,'r') as f:
+                sdks = f.readlines()
+        except FileNotFoundError:
+            import subprocess
+            t = subprocess.call(['wget',url])
+            try:
+                with open(fn,'r') as f:
+                    sdks = f.readlines()
+
+            except FileNotFoundError:
+                print(f'please download file from {url} when available')
+
+                print('http://staffhome.ecm.uwa.edu.au/~00013890/sudokumin.php')
+                return basicgrid()
+
+
         for s in range(len(sdks)):
             sdks[s] = sdks[s].replace('\n','')
         fullsdks = [[] for i in sdks]
