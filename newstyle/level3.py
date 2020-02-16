@@ -1,7 +1,7 @@
 # level 3 strategies
 # functions here:
 # from level3 import XY_chain,Rectangle
-
+######### !!!!!!! DOESN'T WORK YET !!!!!!!! #############
 from level2 import NT, NT_chains
 #def NT(grid):
 #    nt = []
@@ -37,18 +37,18 @@ from level2 import NT, NT_chains
 def XY_chain(grid):
     found = False
     nakedtwos = NT(grid) #    return nt #[ [value,x,y,sqr] , ... ]
-    print(nakedtwos)
+    #print(nakedtwos)
     if not nakedtwos:
         return [grid,found]
     chains = NT_chains(nakedtwos)
-    for chain in chains:
-        print(chain)
+#    for chain in chains:
+        #print(chain)
 #    input()
     for c in range(len(chains)):
         cc = chains[c]
 
         startvals = {v for v in nakedtwos[c][0]}
-        print(f' startvals = {startvals}')
+        #print(f' startvals = {startvals}')
         startx = nakedtwos[c][1]
         starty = nakedtwos[c][2]
         startsqrxy = nakedtwos[c][3]
@@ -56,11 +56,11 @@ def XY_chain(grid):
         vals = {v for v in nakedtwos[c][0]}
         if len(cc) > 1:
             for cell in cc:
-                print(f'cell {cell}')
+                #print(f'cell {cell}')
                 if len(vals) != 3:
                     vals = {v for v in nakedtwos[c][0]}
                     vals.update([i for i in nakedtwos[cell[0]][0]])
-                print(f' vals = {vals}')
+                #print(f' vals = {vals}')
                 inchain = [c,cell[0]]
                 current = chains[cell[0]]
                 valid = True
@@ -71,13 +71,13 @@ def XY_chain(grid):
                     else:
                         for cur in current:
                             if cur[0] not in inchain:
-                                print(cur[0])
-                                print(inchain)
+                                #print(cur[0])
+                                #print(inchain)
                                 inchain.append(cur[0])
                                 current = chains[cur[0]]
                                 vals.update([i for i in nakedtwos[cur[0]][0]])
 
-                                print(f' vals = {vals}')
+                                #print(f' vals = {vals}')
                                 break
                 if len(vals) == len(inchain):
                     lastvals = nakedtwos[inchain[-1]][0]

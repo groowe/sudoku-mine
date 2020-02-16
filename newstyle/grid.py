@@ -149,3 +149,49 @@ def extremeinvalid():
     return grid
 
 ###############################################################
+### printing : ####
+def preprint(line):
+#    s = []
+#    for item in line:
+#        if type(item) == int:
+#            s.append(item)
+#        else:
+#            s.append(" ")
+#    s = [" " if type(x) == int else x for x in line]
+#    s = [if type(x) == int x for x else " " for x in line]
+    s = [i if type(i) == int else " " for i in line]
+    s = str(s)
+    s = s.replace("None"," ").replace("[","|")
+    s = s.replace("]","|").replace("\'","")
+    line = s
+    newline = ""
+    countchar = 0
+    checkchar = ","
+    for char in line:
+        if char == checkchar:
+            countchar +=1
+            if countchar % 3 == 0:
+                newline +='|'
+            else:
+                newline +=' '
+        else:
+            newline+=char
+    return newline
+
+def printgrid(grid,clean = True):
+#    global grid
+    if clean == False:
+        for x in range(len(grid)):
+            print(grid[x])
+        return
+    print("_"*27)
+    for x in range(len(grid)):
+#       # print('x')
+#       # print(x)
+        if x > 0 and x % 3 == 0:
+            print("_"*27)
+        s = preprint(grid[x])
+#        print(len(s))
+        print("{}".format(s))
+    print("_"*27)
+

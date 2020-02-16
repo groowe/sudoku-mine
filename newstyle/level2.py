@@ -134,7 +134,7 @@ def NT_chains(nakedtwos = []):
                 ncell = nakedtwos[c2]
                 com1 = (cell[0][0] in ncell[0])
                 com2 = (cell[0][1] in ncell[0])
-                com = ((com1 or com2) and com1 != com2 )
+                com = ((com1 or com2))# and com1 != com2 )
                 inrow = (cell[1] == ncell[1])
                 incol = (cell[2] == ncell[2])
                 insqr = (cell[3] == ncell[3])
